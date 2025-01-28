@@ -1,0 +1,23 @@
+@use '@/styles/variables' as var;
+.ui_container{
+    padding: 20px;
+    background: var.$secondary-background-color;
+    height: 100%;
+}
+
+.ui_group{
+    margin-bottom: 20px;
+    background: var.$sidebar-background-color;
+    padding: 20px;
+    border-radius: 10px;
+}
+.ui_header{
+    margin-bottom: 20px;
+    color: var.$primary-text-color;
+    font-size: 20px;
+}
+
+.ui_item_wrapper{
+    display: flex;
+    gap: 20px;
+}

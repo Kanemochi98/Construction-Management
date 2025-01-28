@@ -1,0 +1,143 @@
+@use "@/styles/variables" as var;
+@use "@/styles/functions" as fn;
+@use "@/styles/mixin" as mixin;
+
+.modal {
+  position: fixed;
+  top: fn.get-vw(55px);
+  height: calc(100vh - fn.get-vw(55px));
+  width: 100vw;
+  height: 100vh;
+  @include mixin.md {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+  }
+}
+
+.form_container {
+  width: 100%;
+  background: var.$background-color;
+
+  @include mixin.md {
+    width: 50vw;
+    margin: 0 auto;
+    border-radius: 10px;
+    overflow: hidden;
+    .form_header {
+      font-weight: 600;
+      font-size: 20px;
+      color: var.$sidebar-text-color;
+      background: var.$sidebar-background-color;
+      height: 40px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .form_wrapper {
+      padding: 20px;
+
+      .input_wrapper {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+        max-height: 300px;
+        overflow-y: auto;
+        margin-bottom: 20px;
+        &::-webkit-scrollbar {
+          display: none;
+        }
+      }
+
+      .form_btn_wrapper {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+      }
+
+      // image add input style
+      input[type="file"] {
+        display: none;
+      }
+
+      
+      label[for="file"] {
+        height: 100px;
+        width: 100px;
+        border-radius: 20px;
+        border: 1px dashed #999;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        margin-bottom: 20px;
+      }
+
+     
+      label[for="file"]:hover {
+        color: var.$sidebar-background-color;
+        border: 1px dashed var.$sidebar-background-color;
+      }
+
+      select {
+        -webkit-appearance: none;  
+        -moz-appearance: none;
+        appearance: none;
+        background-image: url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20d%3D%22M7%2010L12%2015%2017%2010H7Z%22%20fill%3D%22%23777%22%2F%3E%3C%2Fsvg%3E'); 
+        background-size: 20px;
+        background-position: right 10px center;
+        background-repeat: no-repeat;
+      }
+
+      select::placeholder { 
+        color: var.$sidebar-background-color;
+        font-size: 12px;
+        opacity: 1;
+      }
+    
+      select option:first-child { 
+        font-size: 14px;
+        font-style: italic;
+      }
+    
+      select option {
+        color: #333;
+        font-size: 14px;
+      }
+    
+    
+      select option:disabled {
+        color: #999;
+      }
+
+      // .form_group{
+      //     width: 100%;
+      //     margin-bottom: 20px;
+
+      //     & label{
+      //         color: var.$primary-text-color;
+      //     }
+
+      //     input{
+      //         margin-top: 10px;
+      //         display: block;
+      //         width: 100%;
+      //         padding: 8px 10px;
+      //         font-size: 13px;
+      //         border: 1px solid var.$sidebar-background-color;
+      //         outline: none;
+      //         border-radius: 5px;
+      //     }
+
+      // }
+    }
+  }
+}

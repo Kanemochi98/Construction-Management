@@ -1,0 +1,28 @@
+@use '@/styles/variables' as var;
+
+.logo{
+    margin-left: 30px;
+}
+
+.logo2{
+    margin-left: 10px;
+}
+
+.icon{
+    width: 20px;
+    color: var.$sidebar-text-color;
+}
+
+.notification_icon,
+.menu_icon{
+    width: 20px;
+    color: var.$primary-text-color;
+}
+
+.light_theme{
+    color: #FFFFFF;
+}
+
+.dark_theme{
+    color: #333333;
+}

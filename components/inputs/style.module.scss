@@ -1,0 +1,44 @@
+@use '@/styles/variables' as var;
+
+.form_group {
+  margin-bottom: 1rem;
+
+  label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+  }
+
+  input,
+  textarea,
+  select {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid var.$sidebar-background-color; 
+    border-radius: 5px;
+    font-size: 1rem;
+    outline: none;
+    background-color: var.$input-bg-color; 
+    -webkit-appearance: none;  
+    -moz-appearance: none;
+    appearance: none;
+  
+    &:focus {
+      border-color: #4caf50;
+      box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
+    }
+  }
+
+  textarea {
+    min-height: 80px;
+    resize: vertical;
+  }
+
+  input::placeholder{ 
+    color: var.$sidebar-background-color;
+    font-size: 12px;
+    opacity: 1;
+  }
+
+  
+}

@@ -1,0 +1,73 @@
+@use '@/styles/variables' as var;
+@use '@/styles/mixin' as mixin;
+
+.layout_container {
+  width: 100vw;
+  height: 100vh;
+  background: var.$background-color;
+  display: flex;
+  flex-direction: column;
+
+  .sidebar {
+    display: none;
+  }
+
+  .layout_rightside {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    .header {
+      position: sticky;
+      top: 0;
+      height: 50px;
+      z-index: 10;
+      background: var.$background-color;
+    }
+
+    .main_content_container {
+      height: 100%;
+      overflow-y: auto;
+      background: var.$secondary-background-color;
+      
+      &::-webkit-scrollbar{
+        display: none;
+      }
+    }
+  }
+
+  .mobile_nav_container {
+    display: block;
+  }
+
+  @include mixin.md {
+    display: grid;
+    grid-template-columns: 170px 1fr;
+    transition: all 0.4s ease-in-out;
+
+    &.mini_sidebar {
+      grid-template-columns: 80px 1fr;
+    }
+
+    .sidebar {
+      display: block;
+      padding: 10px;
+      transition: width 0.4s ease-in-out;
+    }
+
+    .mobile_nav_container {
+      display: none;
+    }
+
+    .layout_rightside {
+      padding: 10px 10px 10px 0;
+
+      .main_content_container {
+        height: calc(100vh - 50px);
+        overflow-y: auto;
+      }
+    }
+  }
+}
+

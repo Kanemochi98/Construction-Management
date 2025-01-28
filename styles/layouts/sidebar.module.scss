@@ -1,0 +1,158 @@
+@use '@/styles/variables.scss' as var;
+
+.sidebar {
+    width: 150px;
+    background: var.$sidebar-background-color;
+    height: 100%;
+    padding-top: 20px;
+    color: var.$sidebar-text-color;
+    border-left: 10px solid var.$sidebar-background-color;
+    transition: 0.5s;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    border-radius: 10px;
+
+    .menu_toggle_container{
+      display: flex;
+      justify-content: end;
+      padding-right: 19px;
+    }
+  
+    & .sidebar_item {
+      display: flex;
+      align-items: center;
+    }
+  
+    & .icon {
+      width: 25px;
+      margin-left: -5px;
+    }
+  
+    ul {
+      width: 100%;
+
+      .title{
+        color: var.$sidebar-text-color;
+      }
+  
+      li.active a::before {
+        content: "";
+        position: absolute;
+        right: 0;
+        top: -50px;
+        width: 50px;
+        height: 50px;
+        background-color: transparent;
+        border-radius: 50%;
+        box-shadow: 35px 35px 0 10px var.$background-color;
+        pointer-events: none;
+      }
+  
+      
+      li.active a::after {
+        content: "";
+        position: absolute;
+        right: 0;
+        bottom: -50px;
+        width: 50px;
+        height: 50px;
+        background-color: transparent;
+        border-radius: 50%;
+        box-shadow: 35px -35px 0 10px var.$background-color;
+        pointer-events: none;
+      }
+  
+      li {
+        width: 100%;
+        list-style: none;
+        border-top-left-radius: 30px;
+        border-bottom-left-radius: 30px;
+  
+        &.active {
+          background: var.$background-color;
+  
+          a {
+            color: var.$sidebar-background-color;
+          }
+
+          .icon svg{
+            color: var.$sidebar-active !important ;
+          }
+
+          .title{
+            color: var.$sidebar-active;
+          }
+        }
+  
+        a {
+          position: relative;
+          display: block;
+          width: 100%;
+          display: flex;
+          text-decoration: none;
+          color: var.$background-color;
+        }
+  
+        .icon {
+          position: relative;
+          display: block;
+          min-width: 50px;
+          height: 50px;
+          line-height: 55px;
+          text-align: center;
+        }
+      }
+    }
+  }
+
+  .mini {
+    width: 60px;
+    transition: width 0.4s ease, transform 0.4s ease;
+  
+    ul {
+      li {
+        .title {
+          display: none; 
+        }
+  
+        .icon {
+          width: 100%;
+          text-align: center;
+        }
+  
+        &.active {
+          a::before {
+            content: "";
+            position: absolute;
+            right: 0; 
+            top: -30px;  
+            width: 30px; 
+            height: 30px; 
+            background-color: transparent;
+            border-radius: 50%;
+            box-shadow: 20px 20px 0 5px var.$background-color; 
+            pointer-events: none;
+          }
+  
+          a::after {
+            content: "";
+            position: absolute;
+            right: 0; 
+            bottom: -30px; 
+            width: 30px; 
+            height: 30px;
+            background-color: transparent;
+            border-radius: 50%;
+            box-shadow: 20px -20px 0 5px var.$background-color;
+            pointer-events: none;
+          }
+        }
+      }
+    }
+  }
+  
+  
+  
+

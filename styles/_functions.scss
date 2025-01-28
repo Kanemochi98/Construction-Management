@@ -1,0 +1,10 @@
+$vw-viewport: 428px;
+$html-font-size: 16px;
+
+@function get-vw($number) {
+	@return ($number * 100vw) / $vw-viewport;
+}
+
+@function rem($number) {
+	@return ($number * 1rem) / $html-font-size;
+}

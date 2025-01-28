@@ -1,0 +1,27 @@
+@use '@/styles/mixin' as mixin;
+@use '@/styles/variables' as var;
+
+
+.mobile_nav_container{
+    background: var.$sidebar-background-color;
+    & ul{
+        display: flex;
+        align-items: center;
+        justify-content: space-between; 
+        color: var.$sidebar-text-color;
+        li{
+            list-style: none;
+            padding: 10px;
+            & a{
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-direction: column;
+
+                svg{
+                    color: var.$sidebar-text-color;
+                }
+            }
+        }
+    }
+}

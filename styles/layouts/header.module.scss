@@ -1,0 +1,31 @@
+@use '@/styles/variables' as var;
+@use '@/styles/mixin' as mixin;
+
+.header_container{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    .header_right{
+        display: flex;
+        align-items: center;
+        gap: 10px;
+
+        .user_profile{
+            display: flex;
+            gap: 5px;
+            align-items: center;
+            color: var.$primary-text-color;
+
+            & span{
+                font-size: 14px;
+                font-weight: 500;
+            }
+        }
+    }
+
+    @include mixin.md{
+        padding: 0;
+    }
+}
+

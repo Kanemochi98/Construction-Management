@@ -1,55 +1,70 @@
-import React, {useState} from 'react';
 import Layout from '@/components/layouts/layout';
-import style from './style.module.scss';
-import dummyData from '@/dummyData/data';
-import ModalBox from './entry/index';
+import Styles from './style.module.scss';
+import { RightIcon } from '@/components/icons';
 
-export default function Staff() {
-    const [ isModalOpen, setIsModalOpen ] = useState(false);
-    const [selectedStaff, setSelectedStaff] = useState<any>(null);
+import { useEffect, useState } from 'react';
+import data from '@/dummyData/data';
 
-    const openModal = (staff: any) => {
-        setSelectedStaff(staff);
-        setIsModalOpen(true);
-    }
-    const closeModal = () => setIsModalOpen(false);
+interface Item {
+    id: number;
+    name: string;
+    department: string;
+    type: string;
+    address: string;
+    email: string;
+    phone: string;
+}
+
+
+export default function Staff () {
+
+    const [staffs, setStaffs] = useState<Item[]>([]);
+    useEffect(()=> {
+        setStaffs(data);
+    }, [])
+
+    console.log(staffs)
     return (
         <Layout>
-            <div className={style.staff_container}>
-                <div className={style.staff_list_header}>
-                    <div>
-                        
-                    </div>
-                    <div>
-                        <button onClick={openModal}> + Add </button>
+            <div className={Styles.container}>
+                <div className={Styles.search_container}></div>
+                <div className={Styles.data_container}>
+                    <div className={Styles.table_container}>
+                        <div className={` ${Styles.table_header}`}>
+                            <div className={`${Styles.freeze_col} ${Styles.freeze_col1}`}>
+                                <div className={Styles.img}></div>
+                            </div>
+                            <div className={`${Styles.freeze_col} ${Styles.freeze_col2}`}>NAME</div>
+                            <div className={`${Styles.col} ${Styles.dep}`}>DEPARTMENT</div>
+                            <div className={`${Styles.col} ${Styles.type}`}>TYPE</div>
+                            <div className={`${Styles.col} ${Styles.phone}`}>PHONE</div>
+                            <div className={`${Styles.col} ${Styles.add}`}>ADDRESS</div>
+                            <div className={`${Styles.col} ${Styles.email}`}>EMAIL</div>
+                            <div className={Styles.last_col}></div>
+                        </div>
+                        <div className={Styles.table_body}>
+                            {
+                                staffs.map((staff)=>(
+                                    <div className={Styles.row} key={staff.id}>
+                                        <div className={`${Styles.freeze_col} ${Styles.freeze_col1}`}>
+                                            <div className={Styles.img}></div>
+                                        </div>
+                                        <div className={`${Styles.freeze_col} ${Styles.freeze_col2}`}>{ staff.name }</div>
+                                        <div className={`${Styles.col} ${Styles.dep}`}>{staff.department}</div>
+                                        <div className={`${Styles.col} ${Styles.type}`}>{staff.type}</div>
+                                        <div className={`${Styles.col} ${Styles.phone}`}>{staff.phone}</div>
+                                        <div className={`${Styles.col} ${Styles.add}`}>{staff.address}</div>
+                                        <div className={`${Styles.col} ${Styles.email}`}>{staff.email}</div>
+                                        <div className={Styles.last_col}>
+                                            <RightIcon />
+                                        </div>
+                                    </div>
+                                ))
+                            }
+                        </div>
                     </div>
                 </div>
-                {/* <table className={style.table}>
-                    <thead>
-                        <tr>
-                            <th className={`${style.cell} ${style.freeze_header}`}>Name</th>
-                            <th className={style.cell}>Email</th>
-                            <th className={style.cell}>Phone</th>
-                            <th className={style.cell}>Address</th>
-                            <th className={style.cell}>Status</th>
-                            <th className={style.cell}>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {dummyData.map((staff, index) => (
-                            <tr key={index}>
-                                <td className={`${style.cell} ${style.freeze_column}`}>{staff.name}</td>
-                                <td className={style.cell}>{staff.email}</td>
-                                <td className={style.cell}>{staff.phone}</td>
-                                <td className={style.cell}>{staff.address}</td>
-                                <td className={style.cell}>{staff.status}</td>
-                                <td className={style.cell}>Edit/Delete</td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table> */}
-                {isModalOpen && <ModalBox closeModal={closeModal} staff={selectedStaff}/>}
             </div>
         </Layout>
-    );
+    )
 }

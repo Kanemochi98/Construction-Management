@@ -1,6 +1,6 @@
 import Layout from '@/components/layouts/layout';
-import { HomeIcon, StaffIcon, VehicleIcon, SiteIcon, PartnerIcon, ScheduleIcon, NotificaitonIcon } from '@/components/icons';
-import {FormBtn, MenuBtn, ThemeToggle} from '@/components/buttons';
+import { HomeIcon, StaffIcon, VehicleIcon, SiteIcon, PartnerIcon, ScheduleIcon, NotificaitonIcon, FilterIcon, SortingIcon, PlusIcons, SearchIcon } from '@/components/icons';
+import {AddBtn, FilterBtn, FormBtn, MenuBtn, ThemeToggle} from '@/components/buttons';
 import { FormInput } from '@/components/inputs';
 import style from './style.module.scss';
 
@@ -18,6 +18,10 @@ export default function Ui () {
                         <PartnerIcon />
                         <ScheduleIcon />
                         <NotificaitonIcon />
+                        <FilterIcon />
+                        <SortingIcon />
+                        <PlusIcons />
+                        <SearchIcon />
                     </div>
                 </div>
                 <div className={style.ui_group}>
@@ -27,6 +31,8 @@ export default function Ui () {
                         <FormBtn type='submit' variant='submit'>Save</FormBtn>
                         <MenuBtn/>
                         <ThemeToggle/>
+                        <FilterBtn />
+                        <AddBtn />
                     </div>
                 </div>
                 <div className={style.ui_group}>

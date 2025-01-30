@@ -1,5 +1,6 @@
 @use '@/styles/variables' as var;
 @use '@/styles/mixin' as mixin;
+@import '../functions';
 
 .layout_container {
   width: 100vw;
@@ -36,6 +37,10 @@
       
       &::-webkit-scrollbar{
         display: none;
+      }
+
+      @include mixin.es {
+        padding: get-vw(7px);
       }
     }
   }

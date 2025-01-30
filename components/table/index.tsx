@@ -1,72 +1,74 @@
-import React, { useState } from 'react';
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import React, { useState, useEffect } from "react";
+import { DragIcon } from "@/components/icons";
+import dummyData from "@/dummyData/team/data";
+import style from "./style.module.scss";
 
-const SortableList = () => {
-  const [items, setItems] = useState([
-    { id: '1', content: 'Item 1' },
-    { id: '2', content: 'Item 2' },
-    { id: '3', content: 'Item 3' },
-    { id: '4', content: 'Item 4' },
-  ]);
+interface Item {
+  id: number;
+  name: string;
+  color: string;
+}
 
-  const handleOnDragEnd = ({ result }: any) => {
-    const { source, destination } = result;
+const NativeDndList = () => {
+  const [items, setItems] = useState<Item[]>(dummyData);
 
-    
-    if (!destination) return;
+  useEffect(() => {
+    setItems(dummyData);
+  }, []);
 
-    const updatedItems = Array.from(items);
-    const [removed] = updatedItems.splice(source.index, 1);
-    updatedItems.splice(destination.index, 0, removed);
+  const handleDragStart = (
+    e: React.DragEvent<HTMLSpanElement>,
+    index: number
+  ) => {
+    e.dataTransfer.setData("text/plain", index.toString());
+    e.dataTransfer.effectAllowed = "move";
+  };
 
+  const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+  };
+
+  const handleDrop = (e: React.DragEvent<HTMLDivElement>, index: number) => {
+    e.preventDefault();
+    const draggedIndex = parseInt(e.dataTransfer.getData("text/plain"), 10);
+    if (draggedIndex === index) return; // Prevent unnecessary updates
+
+    const updatedItems = [...items];
+    const [draggedItem] = updatedItems.splice(draggedIndex, 1);
+    updatedItems.splice(index, 0, draggedItem);
     setItems(updatedItems);
   };
 
   return (
-    <DragDropContext onDragEnd={handleOnDragEnd}>
-      <Droppable droppableId="list">
-        {(provided) => (
-          <div
-            {...provided.droppableProps}
-            ref={provided.innerRef}
-            style={{
-              padding: '10px',
-              border: '1px solid #ccc',
-              borderRadius: '5px',
-              backgroundColor: '#f7f7f7',
-              maxWidth: '300px',
-              margin: 'auto',
-              minHeight: '100px',
-            }}
+    <div className={style.container_style}>
+      {items.map((item, index) => (
+        <div
+          key={item.id}
+          onDragOver={handleDragOver}
+          onDrop={(e) => handleDrop(e, index)}
+          className={style.card_style}
+        >
+          {/* Drag handle */}
+          <span
+            className={style.dragIcon}
+            draggable
+            onDragStart={(e) => handleDragStart(e, index)}
           >
-            {items.map((item, index) => (
-              <Draggable key={item.id} draggableId={item.id} index={index}>
-                {(provided, snapshot) => (
-                  <div
-                    ref={provided.innerRef}
-                    {...provided.draggableProps}
-                    {...provided.dragHandleProps}
-                    style={{
-                      padding: '10px',
-                      margin: '5px 0',
-                      border: '1px solid #ddd',
-                      borderRadius: '5px',
-                      backgroundColor: snapshot.isDragging ? '#e0e0e0' : 'white',
-                      cursor: snapshot.isDragging ? 'move' : 'grab', // Change cursor on drag
-                      ...provided.draggableProps.style,
-                    }}
-                  >
-                    {item.content}
-                  </div>
-                )}
-              </Draggable>
-            ))}
-            {provided.placeholder}
-          </div>
-        )}
-      </Droppable>
-    </DragDropContext>
+            <DragIcon />
+          </span>
+
+          {/* Colored box */}
+          <span
+            className={style.colorBox}
+            style={{ backgroundColor: item.color }}
+          ></span>
+
+          {/* Item name */}
+          <span className={style.itemName}>{item.name}</span>
+        </div>
+      ))}
+    </div>
   );
 };
 
-export default SortableList;
+export default NativeDndList;

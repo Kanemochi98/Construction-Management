@@ -1,11 +1,14 @@
 import React from 'react';
-import SortableList from '@/components/table/index';
+import NativeDndList from '@/components/table/index';
+import Layout from '@/components/layouts/layout';
 
 const App = () => (
-  <div style={{ padding: '20px' }}>
+  <Layout>
+    <div style={{ padding: '20px' }}>
     <h1>Sortable List</h1>
-    <SortableList />
-  </div>
+    <NativeDndList />
+    </div>
+  </Layout>
 );
 
 export default App;

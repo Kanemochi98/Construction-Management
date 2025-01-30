@@ -74,4 +74,10 @@ export function FaMoon () {
     )
 }
 
+export function DragIcon() {
+    return(
+        <svg height="30px" id="Layer_1"  version="1.1" viewBox="0 0 512 512" width="512px"  xmlns="http://www.w3.org/2000/svg" ><g><rect height="32" width="512" y="144"/><rect height="32" width="512" y="240"/><rect height="32" width="512" y="336"/></g></svg>
+    )
+}
+
 

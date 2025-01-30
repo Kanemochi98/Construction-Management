@@ -1,5 +1,6 @@
 @use '@/styles/variables' as var;
 @use '@/styles/mixin' as mixin;
+@import '../functions';
 
 .layout_container {
   width: 100vw;
@@ -7,6 +8,8 @@
   background: var.$background-color;
   display: flex;
   flex-direction: column;
+
+  // padding: 15px;
 
   .sidebar {
     display: none;
@@ -30,9 +33,14 @@
       height: 100%;
       overflow-y: auto;
       background: var.$secondary-background-color;
+      padding: 10px;
       
       &::-webkit-scrollbar{
         display: none;
+      }
+
+      @include mixin.es {
+        padding: get-vw(7px);
       }
     }
   }

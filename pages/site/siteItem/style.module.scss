@@ -1,0 +1,36 @@
+@use '@/styles/variables' as var;
+.container_style {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+  }
+  
+  .card_style {
+    display: flex;
+    align-items: center; 
+    padding: 10px;
+    margin-bottom: 8px;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    cursor: grab; 
+  }
+  
+  .dragIcon {
+    cursor: grab;
+    margin-right: 10px;
+  }
+  
+  .colorBox {
+    width: 70px;
+    height: 40px;
+    border-radius: 4px;
+    margin-right: 10px;
+  }
+  
+  .itemName {
+    flex-grow: 1;
+  }
+  

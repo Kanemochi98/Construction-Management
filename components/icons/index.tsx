@@ -77,7 +77,7 @@ export function FaMoon () {
 
 export function DragIcon() {
     return(
-        <svg height="30px" id="Layer_1"  version="1.1" viewBox="0 0 512 512" width="512px"  xmlns="http://www.w3.org/2000/svg" ><g><rect height="32" width="512" y="144"/><rect height="32" width="512" y="240"/><rect height="32" width="512" y="336"/></g></svg>
+        <svg width="18" height="18" id="Layer_1"  version="1.1" viewBox="0 0 512 512"  xmlns="http://www.w3.org/2000/svg" ><g><rect height="32" width="512" y="144"/><rect height="32" width="512" y="240"/><rect height="32" width="512" y="336"/></g></svg>
     )
 }
 
@@ -106,7 +106,7 @@ export const SortingIcon = () => {
 
 export const PlusIcons = () => {
     return (
-        <svg xmlns="http://www.w3.org/2000/svg" className={style.icon_size} viewBox="0 0 24 24"><path fill="currentColor" d="M15.5 6H10V.5a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5V6H.5a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5H6v5.5a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5V10h5.5a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" className={style.plus_icon} viewBox="0 0 24 24"><path fill="currentColor" d="M15.5 6H10V.5a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5V6H.5a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5H6v5.5a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5V10h5.5a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5"/></svg>
     )
 }
 
@@ -115,3 +115,17 @@ export const SearchIcon = () => {
         <svg xmlns="http://www.w3.org/2000/svg" className={style.icon_size} viewBox="0 0 24 24"><path fill="currentColor" d="M15.5 14h-.79l-.28-.27A6.47 6.47 0 0 0 16 9.5A6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5S14 7.01 14 9.5S11.99 14 9.5 14"/></svg>
     )
 }
+
+
+export const AddCarIcon = () => {
+    return(
+        <svg xmlns="http://www.w3.org/2000/svg" height="1em" fill="currentColor" viewBox="0 0 30 27.214"><g id="vehicles-truck-hammer-plus02" transform="translate(-1 -67.7)"><path id="Path_277" data-name="Path 277" d="M16.578,89.5l-4.651-4.651a.743.743,0,0,0-1.047,0l-.349.349L7.692,82.357l4.66-4.657H7.416L5.226,79.891l-.217-.217H3.962v1.047l.217.217L1,84.116l2.469,2.469,3.179-3.179,2.839,2.839-.352.349a.743.743,0,0,0,0,1.047l4.651,4.651a.743.743,0,0,0,1.047,0l1.745-1.745a.747.747,0,0,0,0-1.05Z" transform="translate(0 -9.707)" fill="currentColor"></path><g id="Group_2355" data-name="Group 2355" transform="translate(24.431 67.7)"><path id="Path_278" data-name="Path 278" d="M806.205,166.586h-5.871a.334.334,0,0,1-.334-.334v-.117a.334.334,0,0,1,.334-.334H806.2a.334.334,0,0,1,.334.334v.117A.33.33,0,0,1,806.205,166.586Z" transform="translate(-800 -162.923)" fill="currentColor"></path><path id="Path_279" data-name="Path 279" d="M898.1,73.9V68.034a.334.334,0,0,1,.334-.334h.117a.334.334,0,0,1,.334.334V73.9a.334.334,0,0,1-.334.334h-.117A.331.331,0,0,1,898.1,73.9Z" transform="translate(-895.223 -67.7)" fill="currentColor"></path></g><path id="Path_280" data-name="Path 280" d="M122.742,330.586l-3.754-5.631a2.811,2.811,0,0,0-2.343-1.255h-5.631v8.446a.937.937,0,0,1-.938.938H96v4.692a2.82,2.82,0,0,0,2.815,2.815h1.07a3.735,3.735,0,0,0,7.24,0h4.956a3.735,3.735,0,0,0,7.24,0H120.4a2.82,2.82,0,0,0,2.815-2.815v-5.63A2.812,2.812,0,0,0,122.742,330.586Zm-3.282,2.5a.937.937,0,0,1-.938.938h-3.754a.937.937,0,0,1-.938-.938v-5.63a.937.937,0,0,1,.938-.938h.938a.938.938,0,0,1,.78.416l2.815,4.223a.949.949,0,0,1,.158.522Z" transform="translate(-92.214 -248.493)" fill="currentColor"></path></g></svg>
+    )
+}
+
+export const AddStaffIcon = () => {
+    return (
+        <svg xmlns="http://www.w3.org/2000/svg" height="1em" fill="currentColor" viewBox="0 0 30.001 29.874"><g id="person_puls" transform="translate(-127.6 -49.6)"><path id="Path_26" data-name="Path 26" d="M140.747,143.953a23.316,23.316,0,0,1,8.656,1.8q4.507,1.8,4.5,4.726v3.306H127.6v-3.3q0-2.922,4.5-4.726A23.276,23.276,0,0,1,140.747,143.953Zm0-3.306a6.564,6.564,0,0,1-6.538-6.535,6.432,6.432,0,0,1,1.923-4.654,6.418,6.418,0,0,1,9.23,0,6.415,6.415,0,0,1,1.923,4.654,6.564,6.564,0,0,1-6.538,6.535Z" transform="translate(0 -74.316)" fill="currentColor"></path><g id="Group_252" data-name="Group 252" transform="translate(147.344 49.6)"><path id="Path_27" data-name="Path 27" d="M507.732,148.933h-9.207a.524.524,0,0,1-.525-.525v-.184a.524.524,0,0,1,.525-.525h9.207a.524.524,0,0,1,.525.525v.184A.524.524,0,0,1,507.732,148.933Z" transform="translate(-498 -143.186)" fill="currentColor"></path><path id="Path_28" data-name="Path 28" d="M596,59.332V50.125a.524.524,0,0,1,.525-.525h.184a.524.524,0,0,1,.525.525v9.207a.524.524,0,0,1-.525.525h-.184A.524.524,0,0,1,596,59.332Z" transform="translate(-591.491 -49.6)" fill="currentColor"></path></g></g></svg>
+    )
+}
+

@@ -1,4 +1,5 @@
 @use '@/styles/variables' as var;
+@import '../../styles/mixin';
 
 .form_group {
   margin-bottom: 1rem;
@@ -41,4 +42,152 @@
   }
 
   
+}
+
+// AZM
+
+.search_bar {
+  width: 250px;
+  height: 32px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  border: 1px solid var.$btn-color;
+  border-radius: 5px;
+  background-color: transparent;
+
+  @include md {
+    width: 360px;
+    height: 40px;
+  }
+  @include es {
+    width: 100%;
+    height: 32px;
+  }
+
+  & .search_box {
+      flex: 1;
+      height: 100%;
+      background-color: transparent;
+      outline: none;
+      border: none;
+      padding-left: 10px;
+      color: #333;
+      font-size: 14px;
+      
+  }
+
+  & .search_btn {
+      width: 32px;
+      height: 32px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: transparent;
+      border: none;
+      border-left: 1px solid var.$btn-color;
+      color: var.$btn-color;
+      cursor: pointer;
+
+      @include md {
+        width: 40px;
+        height: 40px;
+      }
+      @include es {
+        width: 32px;
+        height: 32px;
+      }
+
+
+      
+
+      &:hover {
+       
+      }
+      &:active {
+        background-color: var.$btn-color;
+        color: #FFF;
+      }
+  }
+}
+
+// Input Box
+
+.input_container {
+  width: 100%;
+  // height: auto;
+  
+  & .header {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: flex-end;
+    gap: 10px;
+    margin-bottom: 5px;
+   
+    & .label {
+      font-size: 14px;
+      font-weight: 600;
+      color: var.$primary-text-color;
+    }
+    & .require {
+      font-size: 13px;
+      color: var.$require-color;
+    }
+  }
+  & .input_box {
+    width: 100%;
+    border-radius: 5px;
+    height: 48px;
+    border: 1px solid var.$btn-color;
+    background-color: var.$input-bg-color;
+    outline: none;
+    padding-left: 10px;
+    padding-right: 10px;
+    &::placeholder {
+      color: #CCC;
+    }
+  }
+  & .text_area_box {
+    @extend .input_box;
+    width: 100%;
+    height: 78px;
+    resize: none;
+    padding: 10px;
+
+    // height: 100%
+  }
+  
+  
+
+  & .select_box {
+    @extend .input_box;
+  }
+}
+
+
+// image 
+.image_input {
+  width: 140px;
+  height: 100px;
+  // border: 1px solid red;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  & input {
+    
+    display: none;
+  }
+  & label {
+    border: 2px dashed var.$btn-color;
+    border-radius: 5px;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+  }
 }

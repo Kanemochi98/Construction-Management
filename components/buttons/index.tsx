@@ -48,16 +48,16 @@ const Btn = ({name, icon, type, isActive, onClick }) => {
 }
 
 // Child Btn
-export const FilterBtn = ({isActive, onClick}) => {
+export const FilterBtn = ({onFilterActive, onHandleFilter}) => {
  
   return(
-    <Btn icon={<FilterIcon />} name={"Filter"} type={"button"} isActive={isActive} onClick={onClick}  />
+    <Btn icon={<FilterIcon />} name={"Filter"} type={"button"} isActive={onFilterActive} onClick={onHandleFilter}  />
   )
 }
 
-export const AddBtn = ({isActive, onClick}) => {
+export const AddBtn = ({onAddActive, onHandleAdd}) => {
   return(
-    <Btn icon={<PlusIcons />} name={"Add"} type={"button"} isActive={isActive} onClick={onClick} />
+    <Btn icon={<PlusIcons />} name={"Add"} type={"button"} isActive={onAddActive} onClick={onHandleAdd} />
   )
 }
 

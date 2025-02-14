@@ -32,4 +32,10 @@
 .icon_size {
     width: 24px;
     height: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    // border: 1px solid red;
+    color: var.$btn-color;
 }
+

@@ -9,7 +9,12 @@
     --sidebar-active:#333333;
     --input-bg-color:#FFFFFF;
     --row-bg-color: #E9FBF7; // azm update
+    --row-sec-bg-color: #e9fbf77d;
     --header-text-color: #33333374;
+    --header-cell-color: #6F8882;
+    --header-bg-color: #FFF;
+    --row-hover-color: #C9F5EB;
+    // --text-color: #333;
 
 }
  
@@ -21,21 +26,38 @@
     --secondary-background-color: #272234;
     --sidebar-active:#6C9BCF;
     --input-bg-color:#333333;
+    --row-bg-color: #3E3653;
+    --row-sec-bg-color: #3e365388;
+    --header-text-color: #ffffff81;
+    --header-bg-color: #272234;
+    --row-hover-color: #4A4163;
+    // --text-color: #FFF;
 }
-  
+
+$primary-color: var(--primary-color);
 $background-color: var(--background-color);
 $sidebar-background-color: var(--primary-color);
 $primary-text-color: var(--primary-text-color);
 $sidebar-text-color: var(--sidebar-text-color);
+$header-text-color: var(--header-text-color);
+$header-bg-color: var(--header-bg-color);
 $secondary-background-color: var(--secondary-background-color);
 $sidebar-active: var(--sidebar-active);
-$input-bg-color: var(--input-bg-color);
+// $input-bg-color: var(--input-bg-color);
+$input-bg-color: #E3FAF4;
 $submit-btn-bg-color: #5596B4;
 $submit-btn-text-color: #FFFFFF;
 $cancel-btn-bg-color: #FFFFFF;
 $cancel-btn-text-color: #5596B4;
 $btn-border-color: #5596B4;
 $btn-color: #34A096;
+$btn-hover-color: #cbf6f2;
+// $row-hover-color: #FBE9ED;
+$row-hover-color: var(--row-hover-color);
+$row-bg-color: var(--row-bg-color);
+$row-sec-bg-color: var(--row-sec-bg-color);
+$require-color: #F5B157;
+// $text-color: var
 
 // CARD
 $card-boxshadow: 0 3px 6px rgb(0 0 0 / 16%);

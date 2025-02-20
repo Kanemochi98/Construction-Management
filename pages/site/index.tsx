@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import React from 'react';
 import Styles from './styles.module.scss'
 import { SearchComponent } from '@/components/search_component';
+
 import { DataList } from '@/components/list';
 import { Modal } from '@/components/modal/Modal';
 

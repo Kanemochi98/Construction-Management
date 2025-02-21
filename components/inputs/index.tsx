@@ -120,7 +120,7 @@ export const InputComponent = ({
   )
 }
 
-export const ImageInputComponent = ({onHandleImage}) => {
+export const ImageInputComponent = ({onHandleImage, preview}) => {
 
   return (
     <>
@@ -132,9 +132,20 @@ export const ImageInputComponent = ({onHandleImage}) => {
           onChange={onHandleImage}
          
         />
+        {
+          preview ? <label htmlFor="image">
+            <img 
+            className={styles.pre_image} 
+            src={preview}
+            alt="selected"
+          />
+          </label> : 
+        
         <label htmlFor="image">
           <ImageAddIcon />
+          
         </label>
+        }
       </div>
     </>
   )

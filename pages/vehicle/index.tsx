@@ -53,7 +53,7 @@ export default function Vehicle () {
 
   // edit 
   const [activeEdit, setActiveEdit] = useState(false);
-  const [eidtRow, setEditRow] = useState(null);
+  const [editRow, setEditRow] = useState(null);
   const handleEdit = (id: id) => {
     setActiveEdit(true)
     setEditRow(id)
@@ -67,7 +67,6 @@ export default function Vehicle () {
 
   // Sorting
 
-  
     const col = {
      img: " ",
      model: "MODEL",
@@ -166,9 +165,7 @@ export default function Vehicle () {
 
       img: File | null;
       model: string;
-      plate: string;
       type: string;
-      status:string;
       ins_date: string;
       reg_date: string;
     }
@@ -176,23 +173,21 @@ export default function Vehicle () {
     const [vehicle, setVehicle] = useState<Vehicle>({
       img: null,
       model: "",
-      plate: "",
       type: "",
-      status: "",
       ins_date: "",
       reg_date: ""
-      
     });
+
+    const [preview, setPreview] = useState(null);
     
-    // const [image, setImage] = useState<File | null >(null);
-    // console.log(image)
 
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       if ( e.target.files && e.target.files.length > 0 ) {
         const file = e.target.files[0];
         setVehicle((prev) => (
           { ...prev, img: file}
-        ))
+        ));
+        setPreview(URL.createObjectURL(file));
       }
     }
     
@@ -208,7 +203,7 @@ export default function Vehicle () {
       e.preventDefault();
       console.log(vehicle);
     }
-    console.log(vehicle);
+    // console.log(editRow);
         
     return (
         <Layout>
@@ -255,9 +250,11 @@ export default function Vehicle () {
               <Entry 
                 onHandleImage = {handleImageChange}
                 onHandelChange={handleChange} 
+                onHandleSubmit = {handleSubmit}
+                preview={preview}
                 vehicle={vehicle} 
                 edit={activeEdit} 
-                editRow={eidtRow}
+                editRow={editRow}
                 onClose={() => {
                   setActiveAdd(false)
                   setActiveEdit(false)

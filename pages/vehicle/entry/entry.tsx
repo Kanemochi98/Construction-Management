@@ -3,7 +3,7 @@ import Style from './style.module.scss'
 import { DateInput, ImageInputComponent, InputComponent, SelectBoxComponent, TextAreaBox } from '@/components/inputs'
 import { DataList } from '@/components/list';
 
-export const Entry = ({edit, eidtRow, onClose, vehicle, onHandelChange, onHandleImage  }) => {
+export const Entry = ({edit, editRow, onClose, vehicle, onHandelChange, onHandleImage, onHandleSubmit, preview  }) => {
 
     const vehicleType = [
         { id: 1, value: 'Car' },
@@ -18,21 +18,19 @@ export const Entry = ({edit, eidtRow, onClose, vehicle, onHandelChange, onHandle
         { id: 10, value: 'Tractor' }
       ];
 
-     
-    
+
+     console.log(editRow)
+
     return (
         <>
             <div className={Style.container}>
-                <form className={Style.form_container} >
+                <form className={Style.form_container}  
+                    onSubmit={onHandleSubmit}
+                >
                     <div className={Style.data_container}>
                         <div className={Style.first_col}>
                             <div className={Style.row}>
-                                <ImageInputComponent 
-                                    // name="img"
-                                    // value={vehicle.img}
-                                    onHandleImage={onHandleImage}
-                                    required={false}
-                                />
+                               
                             </div>
                             <div className={Style.row}>
                                 <InputComponent 
@@ -55,19 +53,6 @@ export const Entry = ({edit, eidtRow, onClose, vehicle, onHandelChange, onHandle
                                     def_value="Select Vehicle Type"
                                 />
                             </div>
-                           
-                        </div>
-                        <div className={Style.second_col}>
-                            <div className={Style.row}>
-                                <InputComponent 
-                                    label={"Plate Number"}
-                                    required={true}
-                                    placeholder={"Enter Vehicle Plate Number..."}
-                                    onhandleChange={onHandelChange}
-                                    value={vehicle.plate}
-                                    name="plate"
-                                />
-                            </div>
                             <div className={`${Style.row} ${Style.two_col}`}>
                                 <div className={Style.col}>
                                     <DateInput 
@@ -88,6 +73,46 @@ export const Entry = ({edit, eidtRow, onClose, vehicle, onHandelChange, onHandle
                                     />
                                 </div>
                             </div>
+                           
+                        </div>
+                        <div className={Style.second_col}>
+                            <div className={Style.row}>
+                                {/* <InputComponent 
+                                    label={"Plate Number"}
+                                    required={true}
+                                    placeholder={"Enter Vehicle Plate Number..."}
+                                    onhandleChange={onHandelChange}
+                                    value={vehicle.plate}
+                                    name="plate"
+                                /> */}
+                                 <ImageInputComponent 
+                                    // name="img"
+                                    // value={vehicle.img}
+                                    onHandleImage={onHandleImage}
+                                    required={false}
+                                    preview={preview}
+                                />
+                            </div>
+                            {/* <div className={`${Style.row} ${Style.two_col}`}>
+                                <div className={Style.col}>
+                                    <DateInput 
+                                        label="Registration Expiry Date" 
+                                        name="reg_date"
+                                        value={vehicle.reg_date}
+                                        onhandleChange={onHandelChange}
+                                        required={false}
+                                    />
+                                </div>
+                                <div className={Style.col}>
+                                    <DateInput 
+                                        label="Insurance Expiry Date"
+                                        name="ins_date"
+                                        value={vehicle.ins_date}
+                                        onhandleChange={onHandelChange}
+                                        required={false}
+                                    />
+                                </div>
+                            </div> */}
                             <div className={`${Style.row} ${Style.text_area}`}>
                                
                                 <TextAreaBox 
@@ -107,6 +132,7 @@ export const Entry = ({edit, eidtRow, onClose, vehicle, onHandelChange, onHandle
                             type='button' 
                             variant='cancel'
                             onClick={onClose}
+                            // onHandleSubmit={onHandleSubmit}
                         >
                             Cancel
                         </FormBtn>

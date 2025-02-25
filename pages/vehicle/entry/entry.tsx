@@ -132,7 +132,6 @@ export const Entry = ({edit, editRow, onClose, vehicle, onHandelChange, onHandle
                             type='button' 
                             variant='cancel'
                             onClick={onClose}
-                            // onHandleSubmit={onHandleSubmit}
                         >
                             Cancel
                         </FormBtn>

@@ -1,120 +1,141 @@
-import React, { useState ,useRef } from "react";
-import style from "./style.module.scss";
-import { FormBtn } from "@/components/buttons";
-import { FormInput } from "@/components/inputs";
 
-export default function StaffEntryModel({ closeModal, staff }: any) {
-  const modalContentRef = useRef<HTMLDivElement>(null);
+import { FormBtn } from '@/components/buttons';
+import styles from './style.module.scss';
+import { ImageInputComponent, InputComponent, SelectBoxComponent, TextAreaBox } from '@/components/inputs';
+// import { Value } from 'sass';
 
-  const handleClickOutside = (e: React.MouseEvent) => {
-    if (
-      modalContentRef.current &&
-      !modalContentRef.current.contains(e.target as Node)
-    ) {
-      closeModal();
-    }
-  };
+export const Entry = ({onHandleImage, preview, staff, onHandleChange, edit, onClose}) => {
 
-  const [selectedStaffType, setSelectedStaffType] = useState("");
+  const departments = [
+    {id: 1, value: 'Management'},
+    {id: 2, value: 'HR'},
+    {id: 3, value: 'Accounting'}
+  ];
 
-  const handleStaffTypeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedStaffType(event.target.value);
-  };
+  const row = [
+    {id: 1, value: "Adminstrator"},
+    {id: 2, value: "On-Sites-Staff"}
+  ];
 
   return (
-    <div id="modalBox" className={style.modal} onClick={handleClickOutside}>
-      <div ref={modalContentRef}>
-        <div className={style.form_container}>
-          <div className={style.form_header}>
-            <span>Staff Entry</span>
-          </div>
-          <form className={style.form_wrapper}>
-            <div className={style.form_group}>
-              <label htmlFor="file" className={style.file_input_label}>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  height="24px"
-                  viewBox="0 0 24 24"
-                  width="24px"
-                  fill="#000000"
-                >
-                  <path d="M0 0h24v24H0V0z" fill="none" />
-                  <path d="M18 20H4V6h9V4H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-9h-2v9zm-7.79-3.17l-1.96-2.36L5.5 18h11l-3.54-4.71zM20 4V1h-2v3h-3c.01.01 0 2 0 2h3v2.99c.01.01 2 0 2 0V6h3V4h-3z" />
-                </svg>
-                <input
-                  type="file"
-                  id="file"
-                  name="file"
-                  className={style.file_input}
-                />
-              </label>
-            </div>
-            <div className={style.input_wrapper}>
-              <div className={style.input_wrapper_left}>
-                <FormInput
-                  label="Name:"
-                  id="name"
-                  name="name"
-                  required={true}
-                  placeholder="Please enter your name"
-                />
-                <FormInput
-                  label="Email:"
-                  type="email"
-                  id="email"
-                  name="email"
-                  required={true}
-                  placeholder="Please enter your email"
-                />
-                <FormInput
-                  label="Phone:"
-                  type="tel"
-                  id="phone"
-                  name="phone"
-                  required={true}
-                  placeholder="Please enter phone number"
-                />
-              </div>
-              <div className={style.input_wrapper_right}>
-                <FormInput
-                  label="Department:"
-                  id="department"
-                  name="department"
-                  required={true}
-                  placeholder="Please enter your department"
-                />
-                <FormInput
-                    label="Staff Type:"
-                    id="stafftype"
-                    name="stafftype"
+
+    <>
+      <div className={styles.container}>
+        <form className={styles.form_container} >
+            <div className={styles.data_container}>
+              <div className={styles.first_col}>
+                <div className={styles.row}>
+                  <InputComponent 
+                    label={'Name'}
                     required={true}
-                    placeholder="Choose Staff Type"
-                    value={selectedStaffType}
-                    onChange={handleStaffTypeChange}
-                    isSelect={true}
-                    options={["Manager", "Employee", "Intern"]}
-                />
-                <FormInput
-                  label="Address:"
-                  id="address"
-                  name="address"
-                  required={true}
-                  isTextarea={true}
-                  placeholder="Please enter address"
-                />
+                    type="text"
+                    placeholder={'Enter Staff Name'}
+                    name="name"
+                    value={staff.name}
+                    onhandleChange={onHandleChange}
+
+                  />
+                </div>
+                <div className={styles.row}>
+                  <InputComponent 
+                    label={'Email'}
+                    required={true}
+                    type="text"
+                    placeholder={'Enter Staff Email'}
+                    name = "email"
+                    value={staff.email}
+                    onhandleChange={onHandleChange}
+                    
+                  />
+                </div>
+                <div className={styles.row}>
+                  <InputComponent 
+                    label={'Password'}
+                    required={true}
+                    type="text"
+                    placeholder={'Enter Staff Password'}
+                    name="password"
+                    value={staff.password}
+                    onhandleChange={onHandleChange}
+                    
+                  />
+                </div>
+                <div className={styles.row}>
+                  <InputComponent 
+                    label={'Phone'}
+                    required={true}
+                    type="number"
+                    placeholder={'Enter Staff Phone No'}
+                    name="phone"
+                    value={staff.phone}
+                    onhandleChange={onHandleChange}
+                    
+                  />
+                </div>
+              </div>
+              <div className={styles.second_col}>
+                <div className={styles.row}>
+                  <ImageInputComponent 
+                    onHandleImage={onHandleImage}
+                    required={false}
+                    preview={preview}
+                    
+
+
+                  />
+                </div>
+                <div className={styles.row}>
+                  <SelectBoxComponent 
+                    label={"Department"}
+                    options={departments}
+                    required={true}
+                    def_value="Select Department "
+                    name="department"
+                    value={staff.department}
+                    onhandleChange={onHandleChange}
+                  />
+                </div>
+
+                <div className={styles.row}>
+                  <SelectBoxComponent 
+                    label={"Row"} 
+                    options={row}
+                    required={true}
+                    def_value="Select Row "
+                    name="row"
+                    value={staff.row}
+                    onhandleChange={onHandleChange}
+                  />
+                </div>
+                
+                <div className={styles.row}>
+                  <TextAreaBox 
+                    label={"Address"}
+                    placeholder="Enter Staff Address"
+                    required={false}
+                    name="address"
+                    value={staff.address}
+                    onhandleChange={onHandleChange}
+                  />
+                </div>
               </div>
             </div>
-            <div className={style.form_btn_wrapper}>
-              <FormBtn type="button" variant="cancel">
+            <div className={styles.button_container}>
+              <FormBtn
+                onClick={onClose}
+              >
                 Cancel
               </FormBtn>
-              <FormBtn type="submit" variant="submit">
-                Save
+              <FormBtn
+                type='submit'
+                variant='submit'
+              >
+               {edit ? 'Update' : 'Save'}
               </FormBtn>
             </div>
-          </form>
-        </div>
+        </form>
       </div>
-    </div>
-  );
+    </>
+
+  )
 }

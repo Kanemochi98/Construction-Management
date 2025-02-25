@@ -70,6 +70,7 @@
 
     .layout_rightside {
       padding: 10px 10px 10px 0;
+      overflow-x: hidden;
 
       .main_content_container {
         height: calc(100vh - 50px);

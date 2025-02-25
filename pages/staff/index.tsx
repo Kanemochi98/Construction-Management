@@ -6,7 +6,7 @@ import Styles from './style.module.scss'
 import { SearchComponent } from '@/components/search_component';
 import { DataList } from '@/components/list';
 import { Modal } from '@/components/modal/Modal';
-import StaffEntryModel from './entry';
+import  { Entry } from './entry';
 
 export default function Staff () {
 
@@ -46,7 +46,6 @@ export default function Staff () {
   // Add
   const [activeAdd, setActiveAdd] = useState(false);
   const handleAdd = () => {
-   
     setActiveAdd(!activeAdd)
   }
  
@@ -74,9 +73,10 @@ export default function Staff () {
     phone: "PHONE",
     email: "EMAIL",
     address: "ADDRESS",
-    note: "NOTE"
+    // note: "NOTE"
     };
-    
+
+   
     const data = [
         { id: 1, img: "s1.jpg", name: "John Doe", department: "HR", phone: "123-456-7890", email: "john@example.com", address: "123 Main St", note:"something" },
         { id: 2, img: "s1.jpg", name: "Jane Smith", department: "Finance", phone: "234-567-8901", email: "jane@example.com", address: "456 Oak St" },
@@ -101,24 +101,38 @@ export default function Staff () {
       note: string
     }
     // handle input value
-    const [staffValue, setStaffValue]:Staff = useState({
+    const [staff, setStaff]:Staff = useState({
       img: "",
       name: "",
       department: "",
       phone: "",
       email: "",
+      password: "",
       address: "",
-      note: ""
+      row: ""
       
     });
+    const [preview, setPreview] = useState(null);
+    
+    const handleImageChange = (e: React.ChangeEvent<HTMLInputElement >) => {
+      if (e.target.files && e.target.files.length > 0 ) {
+        const file = e.target.files[0];
+        setStaff((prev)=> (
+          {...prev, img: file}
+        ));
+        setPreview(URL.createObjectURL(file));
+      }
+    }
     
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
       const {name, value} = event.target;
-      setStaffValue((prev) => (
+
+      setStaff((prev) => (
         {...prev, [name]:value}
       ))
     }
-    
+
+    // console.log(staff)
 
     return (
       <Layout>
@@ -148,7 +162,6 @@ export default function Staff () {
             cols={col} 
             datas={data} 
             isMobile={isMobile} 
-            // edit={activeEdit}   
             onEdit={handleEdit}  
           />
         </div>
@@ -161,12 +174,23 @@ export default function Staff () {
           }}
           title={ !activeEdit ? 'Staff Add Form ' : 'Staff Edit Form'}
         >
-          <StaffEntryModel 
+          {/* <StaffEntryModel 
             onHandelChange={handleChange} 
             staffs={staffValue} 
             edit={activeEdit} 
             editRow={eidtRow}
-           
+          /> */}
+          <Entry 
+            onHandleChange = {handleChange}
+            onHandleImage = {handleImageChange}
+            preview = {preview}
+            staff={staff}
+            edit={activeEdit} 
+            // editRow={editRow}
+            onClose={() => {
+              setActiveAdd(false)
+              setActiveEdit(false)
+            }}
           />
         </Modal>
       </div>

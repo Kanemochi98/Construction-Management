@@ -8,6 +8,19 @@ import { SearchComponent } from '@/components/search_component';
 
 import { DataList } from '@/components/list';
 import { Modal } from '@/components/modal/Modal';
+import Entry from './entry/entry';
+
+type Site = {
+  name: string,
+  partner: string,
+  staff: string,
+  start_date: string,
+  end_date: string,
+  address: string,
+  memo: string
+
+}
+
 
 export default function Site () {
 
@@ -94,31 +107,26 @@ export default function Site () {
       { id: 10, name: "Site J", company: "Company J", manager: "Manager J", address: "Address J", note: "Note J" }
     ];
 
-
-    interface Vehicle {
-      img: string;
-      model: string;
-      plate: string;
-      type: string;
-      ins_date: string;
-      reg_date: string;
-    }
-    // handle input value
-    const [vehicle, setVehicle]:Vehicle = useState({
-      img: "",
-      model: "",
-      plate: "",
-      type: "",
-      ins_date: "",
-      reg_date: ""
-      
-    });
+    const [site, setSite] = useState<Site>({
+      name: "",
+      partner: "",
+      staff: "",
+      start_date: "",
+      end_date: "",
+      address: "",
+      memo: ""
+    })
     
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
       const {name, value} = event.target;
-      setVehicle((prev) => (
+      setSite((prev) => (
         {...prev, [name]:value}
       ))
+    }
+
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement >) => {
+      e.preventDefault();
+      console.log(site)
     }
     
 
@@ -163,13 +171,20 @@ export default function Site () {
           }}
           title="Vehicle Add Form" 
         >
-          <VehicleAddForm 
-            onHandelChange={handleChange} 
-            vehicle={vehicle} 
-            edit={activeEdit} 
+
+          <Entry 
+            site={site}
+            onHandleChange = {handleChange}
+            onhandleSubmit = {handleSubmit}
+            edit={activeEdit}
             editRow={eidtRow}
-           
+            onClose={() => {
+              setActiveAdd(false)
+              setActiveEdit(false)
+            }}
+
           />
+          
         </Modal>
       </div>
      }

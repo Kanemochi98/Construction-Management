@@ -96,8 +96,10 @@ export const SearchBar = ({onSearch}) => {
 }
 
 export const InputComponent = ({
-    name, value, label, required, placeholder, onhandleChange}) => {
+    name, value, type, label, required, placeholder, onhandleChange}) => {
 
+      // console.log(onhandleChange)
+      // console.log(value)
       return (
     <>
       <div className={styles.input_container}>
@@ -108,7 +110,8 @@ export const InputComponent = ({
           { required && <span className={styles.require}>require</span>}
         </div>
         <input 
-          type="text" 
+          // type="text"
+          type={type} 
           className={styles.input_box} 
           placeholder={placeholder} 
           name={name}
@@ -163,7 +166,13 @@ export const SelectBoxComponent = ({label, required, options,name ,value,  onhan
           </label>
           { required && <span className={styles.require}>require</span>}
         </div>
-        <select className={styles.select_box} value={value} name={name} id="" onChange={onhandleChange}>
+        <select 
+          className={styles.select_box} 
+          value={value} 
+          name={name} id="" 
+          onChange={onhandleChange}
+          aria-label={`Select ${label}`} 
+        >
           <option disabled>{def_value}</option>
           {
            options.map((option) => (

@@ -130,3 +130,16 @@ export const AddStaffIcon = () => {
         <svg xmlns="http://www.w3.org/2000/svg" height="1em" fill="currentColor" viewBox="0 0 30.001 29.874"><g id="person_puls" transform="translate(-127.6 -49.6)"><path id="Path_26" data-name="Path 26" d="M140.747,143.953a23.316,23.316,0,0,1,8.656,1.8q4.507,1.8,4.5,4.726v3.306H127.6v-3.3q0-2.922,4.5-4.726A23.276,23.276,0,0,1,140.747,143.953Zm0-3.306a6.564,6.564,0,0,1-6.538-6.535,6.432,6.432,0,0,1,1.923-4.654,6.418,6.418,0,0,1,9.23,0,6.415,6.415,0,0,1,1.923,4.654,6.564,6.564,0,0,1-6.538,6.535Z" transform="translate(0 -74.316)" fill="currentColor"></path><g id="Group_252" data-name="Group 252" transform="translate(147.344 49.6)"><path id="Path_27" data-name="Path 27" d="M507.732,148.933h-9.207a.524.524,0,0,1-.525-.525v-.184a.524.524,0,0,1,.525-.525h9.207a.524.524,0,0,1,.525.525v.184A.524.524,0,0,1,507.732,148.933Z" transform="translate(-498 -143.186)" fill="currentColor"></path><path id="Path_28" data-name="Path 28" d="M596,59.332V50.125a.524.524,0,0,1,.525-.525h.184a.524.524,0,0,1,.525.525v9.207a.524.524,0,0,1-.525.525h-.184A.524.524,0,0,1,596,59.332Z" transform="translate(-591.491 -49.6)" fill="currentColor"></path></g></g></svg>
     )
 }
+
+export const CloseEyeIcon = () => {
+    return (
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="36" viewBox="0 0 36 36"><path fill="currentColor" d="M18.37 11.17a6.8 6.8 0 0 0-2.37.43l8.8 8.8a6.8 6.8 0 0 0 .43-2.4a6.86 6.86 0 0 0-6.86-6.83" class="clr-i-solid clr-i-solid-path-1"/><path fill="currentColor" d="M34.29 17.53c-3.37-6.23-9.28-10-15.82-10a16.8 16.8 0 0 0-5.24.85L14.84 10a14.8 14.8 0 0 1 3.63-.47c5.63 0 10.75 3.14 13.8 8.43a17.8 17.8 0 0 1-4.37 5.1l1.42 1.42a19.9 19.9 0 0 0 5-6l.26-.48Z" class="clr-i-solid clr-i-solid-path-2"/><path fill="currentColor" d="m4.87 5.78l4.46 4.46a19.5 19.5 0 0 0-6.69 7.29l-.26.47l.26.48c3.37 6.23 9.28 10 15.82 10a16.9 16.9 0 0 0 7.37-1.69l5 5l1.75-1.5l-26-26Zm8.3 8.3a6.85 6.85 0 0 0 9.55 9.55l1.6 1.6a14.9 14.9 0 0 1-5.86 1.2c-5.63 0-10.75-3.14-13.8-8.43a17.3 17.3 0 0 1 6.12-6.3Z" class="clr-i-solid clr-i-solid-path-3"/><path fill="none" d="M0 0h36v36H0z"/></svg>
+    )
+}
+
+export const OpenEyeIcon =() => {
+    return (
+
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="36" viewBox="0 0 36 36"><path fill="currentColor" d="M33.62 17.53c-3.37-6.23-9.28-10-15.82-10S5.34 11.3 2 17.53l-.28.47l.26.48c3.37 6.23 9.28 10 15.82 10s12.46-3.72 15.82-10l.26-.48Zm-15.82 8.9C12.17 26.43 7 23.29 4 18c3-5.29 8.17-8.43 13.8-8.43S28.54 12.72 31.59 18c-3.05 5.29-8.17 8.43-13.79 8.43" class="clr-i-solid clr-i-solid-path-1"/><circle cx="18.09" cy="18.03" r="6.86" fill="currentColor" class="clr-i-solid clr-i-solid-path-2"/><path fill="none" d="M0 0h36v36H0z"/></svg>
+    )
+}

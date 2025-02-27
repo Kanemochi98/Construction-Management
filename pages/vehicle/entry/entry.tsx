@@ -29,9 +29,9 @@ export const Entry = ({edit, editRow, onClose, vehicle, onHandelChange, onHandle
                 >
                     <div className={Style.data_container}>
                         <div className={Style.first_col}>
-                            <div className={Style.row}>
+                            {/* <div className={Style.row}>
                                
-                            </div>
+                            </div> */}
                             <div className={Style.row}>
                                 <InputComponent 
                                     label={"Model"}

@@ -7,6 +7,15 @@ import Styles from './styles.module.scss'
 import { SearchComponent } from '@/components/search_component';
 import { DataList } from '@/components/list';
 import { Modal } from '@/components/modal/Modal';
+import Entry from './entry/Entry';
+
+
+type Partner = {
+  name: 'string',
+  fax: 'string',
+  phone: 'string',
+  address: 'string'
+}
 
 export default function Partner () {
 
@@ -92,33 +101,26 @@ export default function Partner () {
         { id: 10, company_name: "Company J", company: "951 Palm St", manager: 90, address: "Hannah Purple" }
         ];
 
+        const [partner, setPartner]  = useState({
+          name: "",
+          fax: "",
+          phone: "",
+          address: ""
+        });
 
-    interface Vehicle {
-      img: string;
-      model: string;
-      plate: string;
-      type: string;
-      ins_date: string;
-      reg_date: string;
-    }
-    // handle input value
-    const [vehicle, setVehicle]:Vehicle = useState({
-      img: "",
-      model: "",
-      plate: "",
-      type: "",
-      ins_date: "",
-      reg_date: ""
-      
-    });
-    
+   
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
       const {name, value} = event.target;
-      setVehicle((prev) => (
+      setPartner((prev) => (
         {...prev, [name]:value}
       ))
     }
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement > ) => {
+      e.preventDefault();
+      console.log(partner);
+    }
     
+    // console.log(handleChange)
 
     return (
       <Layout>
@@ -128,7 +130,7 @@ export default function Partner () {
           edit={activeEdit} 
           editRow={eidtRow} 
           onHandelChange={handleChange} 
-          vehicle={vehicle}  
+          vehicle={partner}  
         /> :
       
       <div className={Styles.container}>
@@ -159,14 +161,18 @@ export default function Partner () {
             setActiveAdd(false)
             setActiveEdit(false)
           }}
-          title="Vehicle Add Form" 
+          title={ !activeEdit ? 'Partner Add Form ' : 'Partner Edit Form'}
         >
-          <VehicleAddForm 
-            onHandelChange={handleChange} 
-            vehicle={vehicle} 
-            edit={activeEdit} 
-            editRow={eidtRow}
-           
+          <Entry 
+            partner = {partner}
+            onHandleChange = {handleChange}
+            onHandleSubmit = {handleSubmit}
+            edit = {activeEdit}
+            editRow = {eidtRow}
+            onClose={()=> {
+              setActiveAdd(false)
+              setActiveEdit(false)
+            }}
           />
         </Modal>
       </div>

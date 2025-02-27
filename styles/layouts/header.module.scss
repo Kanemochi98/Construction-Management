@@ -16,11 +16,29 @@
             gap: 5px;
             align-items: center;
             color: var.$primary-text-color;
+            position: relative;
 
             & span{
                 font-size: 14px;
                 font-weight: 500;
             }
+            & .logout_container {
+                border-radius: 5px;
+                box-shadow: inset 0 0 5px #FFF;
+                padding: 10px;
+                
+                width: 100px;
+                height: 70px;
+                position: absolute;
+                right: 0;
+                top: 55px;
+                background-color: var.$primary-color;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+
+            }
+
         }
     }
 

@@ -169,7 +169,7 @@ export default function Site () {
             setActiveAdd(false)
             setActiveEdit(false)
           }}
-          title="Vehicle Add Form" 
+          title={ !activeEdit ? 'Site Add Form ' : 'Site Edit Form'}
         >
 
           <Entry 

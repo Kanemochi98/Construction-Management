@@ -154,9 +154,11 @@ export const ImageInputComponent = ({onHandleImage, preview}) => {
   )
 }
 
-export const SelectBoxComponent = ({label, required, options,name ,value,  onhandleChange, def_value}) => {
+export const SelectBoxComponent = ({label, required, options,name ,value,  onhandleChange, def_value, placeholder}) => {
   // console.log(options)
-
+  const getDefaultOptionText = (defValue, placeholder) => {
+    return defValue ? defValue : placeholder;
+  };
   // return null
   return (
     <div className={styles.input_container}>
@@ -173,10 +175,10 @@ export const SelectBoxComponent = ({label, required, options,name ,value,  onhan
           onChange={onhandleChange}
           aria-label={`Select ${label}`} 
         >
-          <option disabled>{def_value}</option>
+          <option value="" default disable>{getDefaultOptionText(def_value, placeholder)}</option>
           {
            options.map((option) => (
-            <option key={option.id} value={option.id}>{option.value}</option>
+            <option key={option.id} value={option.id}>{option.name}</option>
            ))
           }
         </select>

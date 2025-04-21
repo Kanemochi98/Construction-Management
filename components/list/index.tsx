@@ -3,7 +3,7 @@ import { RightIcon } from '../icons';
 import { useState, useEffect, useRef } from 'react';
 
 export const DataList = ({cols, datas, isMobile, onEdit}) => {
-
+console.log(datas);
 
     //  const [isMobile, setIsMobile] = useState(false);
         // useEffect(() => {
@@ -28,6 +28,7 @@ export const DataList = ({cols, datas, isMobile, onEdit}) => {
         // }, []);
 
         // row expend
+
         const [isExpended, setIsExpanded] = useState(false);
         const [isActiveRowId, setIsActiveRowId] = useState(null);
         const expendRow = (id, e) => {
@@ -139,7 +140,8 @@ export const DataList = ({cols, datas, isMobile, onEdit}) => {
                 </div>
                 <div className={Styles.table_body}>
                     {
-                        datas.map((row)=>(
+
+                        datas &&datas.map((row)=>(
                             // console.log(row.["id"])
                             <div 
                                 className={Styles.row} 
@@ -148,12 +150,14 @@ export const DataList = ({cols, datas, isMobile, onEdit}) => {
                             >
                                 {
                                     Object.keys(cols).map((col,i)=>(
+                                        // console.log(col)
                                         col === "img" ?  
                                         <div key={i} className={`${Styles.cell} ${activeScrollRow && Styles.scroll_cell} `}>
                                             <div className={Styles.img_container}>
-                                            {/* {console.log(typeof row["img"])} */}
+                                            {/* {console.log(typeof row["image"])} */}
                                             {
-                                                row["img"] != undefined ?  <img src={`/images/${row["img"]}`} alt="" /> : null
+                                                // row["image"] != undefined ?  <img src={`/images/${row["image"]}`} alt="" /> : null
+                                                row["image"] != undefined ?  <img src={row["image"]} alt="" /> : null
                                             }
                                             
                                             </div>

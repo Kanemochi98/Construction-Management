@@ -7,41 +7,47 @@ import Styles from './styles.module.scss'
 import { SearchComponent } from '@/components/search_component';
 import { DataList } from '@/components/list';
 import { Modal } from '@/components/modal/Modal';
-import Entry from './entry/Entry';
+// import { Entry } from './entry';
+import { apiGetPartners } from '../api/apiCreatePartner';
+import { Entry } from './entry/Entry';
 
+export default function Partner() {
 
-type Partner = {
-  name: 'string',
-  fax: 'string',
-  phone: 'string',
-  address: 'string'
-}
-
-export default function Partner () {
-
-  
+  const [loading, setLoading] = useState(false);
+  const [data, setData] = useState([]);
   const [isMobile, setIsMobile] = useState(false);
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const handleResize = () => {
-        if(window.innerWidth < 600) {
+        if (window.innerWidth < 600) {
 
-            setIsMobile(window.innerWidth <= 600)
+          setIsMobile(window.innerWidth <= 600)
         } else {
-          setIsMobile(false )
+          setIsMobile(false)
         }
       };
 
       handleResize(); // Set initial value
       window.addEventListener('resize', handleResize);
 
-    //   console.log(window.innerWidth)
+      //   console.log(window.innerWidth)
       return () => {
         window.removeEventListener('resize', handleResize);
       };
     }
-}, []);
- 
+  }, []);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const partnerData = await apiGetPartners();
+        setData(partnerData.data);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    })();
+  }, [loading]);
+
   // Search 
   const [searchValue, setSearchValue] = useState('');
   const handlerSearchChange = (event) => {
@@ -56,19 +62,19 @@ export default function Partner () {
   // Add
   const [activeAdd, setActiveAdd] = useState(false);
   const handleAdd = () => {
-   
+
     setActiveAdd(!activeAdd)
   }
- 
 
+  type id = string | number;
   // edit 
   const [activeEdit, setActiveEdit] = useState(false);
   const [eidtRow, setEditRow] = useState(null);
-  const handleEdit = (id) => {
+  const handleEdit = (id: id) => {
     setActiveEdit(true)
     setEditRow(id)
   }
-  
+
   // Filter
   const [activeFilter, setActiveFilter] = useState(false);
   const handleFilter = () => {
@@ -77,106 +83,128 @@ export default function Partner () {
 
   // Sorting
 
-  
-    const col = {
-   
-    img: "",
-    company_name: "COMPANY NAME",
-    company: "ADDRESS",
-    manager: "TOTAL ",
-    address: "ADMINSTRATOR",
 
-    };
-    
-    const data = [
-        { id: 1, company_name: "Company A", company: "123 Main St", manager: 50, address: "John Doe" },
-        { id: 2, company_name: "Company B", company: "456 Oak St", manager: 75, address: "Jane Smith" },
-        { id: 3, company_name: "Company C", company: "789 Maple Ave", manager: 20, address: "Alice Johnson" },
-        { id: 4, company_name: "Company D", company: "321 Elm St", manager: 100, address: "Bob Brown" },
-        { id: 5, company_name: "Company E", company: "654 Pine St", manager: 30, address: "Charlie White" },
-        { id: 6, company_name: "Company F", company: "987 Cedar Ave", manager: 60, address: "Diana Green" },
-        { id: 7, company_name: "Company G", company: "159 Birch St", manager: 45, address: "Edward Blue" },
-        { id: 8, company_name: "Company H", company: "753 Spruce St", manager: 80, address: "Fiona Black" },
-        { id: 9, company_name: "Company I", company: "852 Ash St", manager: 25, address: "George Red" },
-        { id: 10, company_name: "Company J", company: "951 Palm St", manager: 90, address: "Hannah Purple" }
-        ];
+  const col = {
 
-        const [partner, setPartner]  = useState({
-          name: "",
-          fax: "",
-          phone: "",
-          address: ""
-        });
+    image: "",
+    name: "COMPANY NAME",
+    address: "ADDRESS",
+    phone: "PHONE NO",
+    fax: "FAX"
+    // manager: "TOTAL ",
+    // company: "ADMINSTRATOR",
 
-   
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-      const {name, value} = event.target;
-      setPartner((prev) => (
-        {...prev, [name]:value}
-      ))
-    }
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement > ) => {
-      e.preventDefault();
-      console.log(partner);
-    }
-    
-    // console.log(handleChange)
+  };
 
-    return (
-      <Layout>
+  // const data = [
+  //     { id: 1, company_name: "Company A", company: "123 Main St", manager: 50, address: "John Doe" },
+  //     { id: 2, company_name: "Company B", company: "456 Oak St", manager: 75, address: "Jane Smith" },
+  //     { id: 3, company_name: "Company C", company: "789 Maple Ave", manager: 20, address: "Alice Johnson" },
+  //     { id: 4, company_name: "Company D", company: "321 Elm St", manager: 100, address: "Bob Brown" },
+  //     { id: 5, company_name: "Company E", company: "654 Pine St", manager: 30, address: "Charlie White" },
+  //     { id: 6, company_name: "Company F", company: "987 Cedar Ave", manager: 60, address: "Diana Green" },
+  //     { id: 7, company_name: "Company G", company: "159 Birch St", manager: 45, address: "Edward Blue" },
+  //     { id: 8, company_name: "Company H", company: "753 Spruce St", manager: 80, address: "Fiona Black" },
+  //     { id: 9, company_name: "Company I", company: "852 Ash St", manager: 25, address: "George Red" },
+  //     { id: 10, company_name: "Company J", company: "951 Palm St", manager: 90, address: "Hannah Purple" }
+  //     ];
+
+  interface Partner {
+    name: string,
+    fax: string,
+    phone: string,
+    address: string
+  }
+  // type Partner = {
+  //   name: 'string',
+  //   fax: 'string',
+  //   phone: 'string',
+  //   address: 'string'
+  // }
+  // type Partner = {
+  //   name: 'string',
+  //   fax: 'string',
+  //   phone: 'string',
+  //   address: 'string'
+  // }
+  // handle input value
+  const [partner, setPartner] = useState<Partner>({
+    name: "",
+    fax: "",
+    phone: "",
+    address: ""
+  });
+
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+    setPartner((prev) => (
+      { ...prev, [name]: value }
+    ))
+  }
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    console.log(partner);
+  }
+
+  // console.log(handleChange)
+
+  return (
+    <Layout>
       {
-        (isMobile && activeAdd) || (isMobile && activeEdit ) ? 
-        <VehicleAddForm 
-          edit={activeEdit} 
-          editRow={eidtRow} 
-          onHandelChange={handleChange} 
-          vehicle={partner}  
-        /> :
-      
-      <div className={Styles.container}>
-        <div className={Styles.search_container}>
-          <SearchComponent
-            onSearchValue={searchValue} 
-            onSearchChage={handlerSearchChange} 
-            onSearchSubmit={handlerSearchSubmit}
-            onFilterActive={activeFilter}
-            onHandleFilter={handleFilter}
-            onAddActive = {activeAdd}
-            onHandleAdd = {handleAdd}
-          />
-        </div>
-        <div className={Styles.data_container}>
-          <DataList
-            cols={col} 
-            datas={data} 
-            isMobile={isMobile} 
-            // edit={activeEdit}   
-            onEdit={handleEdit}  
-          />
-        </div>
-        
-        <Modal
-          isOpen={activeAdd || activeEdit}
-          onClose={() => {
-            setActiveAdd(false)
-            setActiveEdit(false)
-          }}
-          title={ !activeEdit ? 'Partner Add Form ' : 'Partner Edit Form'}
-        >
-          <Entry 
-            partner = {partner}
-            onHandleChange = {handleChange}
-            onHandleSubmit = {handleSubmit}
-            edit = {activeEdit}
-            editRow = {eidtRow}
-            onClose={()=> {
-              setActiveAdd(false)
-              setActiveEdit(false)
-            }}
-          />
-        </Modal>
-      </div>
-     }
+        (isMobile && activeAdd) || (isMobile && activeEdit) ?
+          <VehicleAddForm
+            edit={activeEdit}
+            editRow={eidtRow}
+            onHandelChange={handleChange}
+            vehicle={partner}
+          /> :
+
+          <div className={Styles.container}>
+            <div className={Styles.search_container}>
+              <SearchComponent
+                onSearchValue={searchValue}
+                onSearchChage={handlerSearchChange}
+                onSearchSubmit={handlerSearchSubmit}
+                onFilterActive={activeFilter}
+                onHandleFilter={handleFilter}
+                onAddActive={activeAdd}
+                onHandleAdd={handleAdd}
+              />
+            </div>
+            <div className={Styles.data_container}>
+              <DataList
+                cols={col}
+                datas={data}
+                isMobile={isMobile}
+                // edit={activeEdit}   
+                onEdit={handleEdit}
+              />
+            </div>
+
+            <Modal
+              isOpen={activeAdd || activeEdit}
+              onClose={() => {
+                setActiveAdd(false)
+                setActiveEdit(false)
+              }}
+              title={!activeEdit ? 'Partner Add Form ' : 'Partner Edit Form'}
+            >
+              <Entry
+                onHandleChange={handleChange}
+                // onHandleSubmit = {handleSubmit}
+                partner={partner}
+                edit={activeEdit}
+                editRow={eidtRow}
+                onClose={() => {
+                  setActiveAdd(false)
+                  setActiveEdit(false)
+                  setLoading(true)
+                }}
+              />
+            </Modal>
+          </div>
+      }
     </Layout>
-    )
+  )
 }

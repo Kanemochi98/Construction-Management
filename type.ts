@@ -7,6 +7,9 @@ export type Staff = {
     email: string;
     phone: string;
     imageURL: string;
+    // password: string;
+    // role: string;
+    // image: string;
     dropZoneId: string | number;
 }
 

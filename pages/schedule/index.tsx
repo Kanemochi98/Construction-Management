@@ -1,10 +1,11 @@
 import Layout from '@/components/layouts/layout';
-export default function Schedule() {
+import Schedule from '@/components/schedule_interface/index'
+export default function index() {
     return (
         <>
             <Layout>
-                <p>Schedule</p>
+                <Schedule/>
             </Layout>
         </>
     )
-}
+}   

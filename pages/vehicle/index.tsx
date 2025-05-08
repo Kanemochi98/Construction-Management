@@ -44,6 +44,7 @@ export default function Vehicle() {
       } catch (error) {
         console.error('Error fetching data:', error);
       }
+      setLoading(false);
     })();
   }, [loading])
 

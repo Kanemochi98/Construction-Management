@@ -4,7 +4,7 @@ import Header from '@/components/layouts/header';
 import Sidebar from '@/components/layouts/sidebar';
 import MobileNav from '@/components/layouts/mobileNav';
 import style from '@/styles/layouts/layout.module.scss';
-
+import type { Metadata } from "next";
 
 interface LayoutProps {
   children: React.ReactNode;

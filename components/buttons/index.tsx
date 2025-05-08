@@ -3,7 +3,7 @@ import { ThemeContext } from '@/context/ThemeContext';
 import { useSidebar } from '@/context/SidebarContext';
 import { MenuIcon, FaSun, FaMoon, FilterIcon, PlusIcons, SortingIcon } from '../icons';
 import style from './style.module.scss';
-
+import type { ViewType } from "@/types/schedule"
 
 
 export function FormBtn({ type = "button", variant = "default", children, onClick } : any) {
@@ -66,5 +66,28 @@ export const SortingBtn = ({isActive, onClick}) => {
     <Btn icon={<SortingIcon />} name={"Sorting"} type={"button"} isActive={isActive} onClick={onClick} />
   )
 }
+type Props = {
+  view: {
+    label: string
+    // value: ViewType 
+    value: ViewType | "today"
+  }
+  activeView: ViewType
+  // onChange: (value: ViewType) => void
+  onChange: (value: ViewType | "today") => void
+}
+export const ViewControlBtn = ({ view, activeView, onChange }:Props) => {
+  const isActive = view.value === activeView;
+
+  return (
+    <button
+      type="button"
+      className={`${style.control_btn} ${isActive ? style.active : ''}`}
+      onClick={() => onChange(view.value)}
+    >
+      {view.label}
+    </button>
+  );
+};
 
 // export 

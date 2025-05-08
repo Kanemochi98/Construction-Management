@@ -7,7 +7,7 @@ import Styles from './styles.module.scss'
 import { SearchComponent } from '@/components/search_component';
 import { DataList } from '@/components/list';
 import { Modal } from '@/components/modal/Modal';
-// import { Entry } from './entry';
+import { Partner } from '@/types/partner'
 import { apiGetPartners } from '../api/apiCreatePartner';
 import { Entry } from './entry/Entry';
 
@@ -45,6 +45,7 @@ export default function Partner() {
       } catch (error) {
         console.error('Error fetching data:', error);
       }
+      setLoading(false);
     })();
   }, [loading]);
 
@@ -109,12 +110,12 @@ export default function Partner() {
   //     { id: 10, company_name: "Company J", company: "951 Palm St", manager: 90, address: "Hannah Purple" }
   //     ];
 
-  interface Partner {
-    name: string,
-    fax: string,
-    phone: string,
-    address: string
-  }
+  // interface Partner {
+  //   name: string,
+  //   fax: string,
+  //   phone: string,
+  //   address: string
+  // }
   // type Partner = {
   //   name: 'string',
   //   fax: 'string',

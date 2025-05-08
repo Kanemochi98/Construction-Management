@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import styles from './style.module.scss';
 import { DateInput, InputComponent, SelectBoxComponent, TextAreaBox } from '@/components/inputs';
 import { FormBtn } from '@/components/buttons';
-import { apiCreateSite, apiGetSite, apiUpdateSite } from '@/pages/api/apiCreateSite';
+import { apiCreateSite, apiGetSite, apiUpdateSite, apiSoftDelete } from '@/pages/api/apiCreateSite';
 import { apiGetPartners } from '@/pages/api/apiCreatePartner';
 import { apiGetStaffs } from '@/pages/api/apiCreateStaff';
 
@@ -21,11 +21,11 @@ export default function entry({ site, onHandleChange, onHandleSubmit, onClose, e
     //     { id: 1, value: 'Person A' },
     //     { id: 2, value: 'Person B' },
     //     { id: 3, value: 'Person C' },
-    // ]
-
+    // ];
     const [companyRepresentive, setCompanyRepresentive] = useState([]);
     const [partnerCompany, setpartnerCompany] = useState([]);
 
+    
     useEffect(() => {
         (async () => {
             try {
@@ -33,7 +33,7 @@ export default function entry({ site, onHandleChange, onHandleSubmit, onClose, e
                 const partner_company = await apiGetPartners();
                 setCompanyRepresentive(company_representive.data);
                 setpartnerCompany(partner_company.data);
-                
+
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
@@ -98,8 +98,22 @@ export default function entry({ site, onHandleChange, onHandleSubmit, onClose, e
             console.error(`Error ${edit ? 'updating' : 'creating'} site:`, error);
         }
         // console.log(site);
+    }
 
-
+    const handleDelete = async () => {
+        if (edit && editRow) {
+            try {
+                const response = await apiSoftDelete(editRow);
+                if (response) {
+                    console.log('Staff Deleted successfully!');
+                    onClose();
+                } else {
+                    console.error('Failed to delete staff ');
+                }
+            } catch (error) {
+                console.error('Error deleting staff:', error)
+            }
+        }
     }
 
     return (
@@ -128,7 +142,7 @@ export default function entry({ site, onHandleChange, onHandleSubmit, onClose, e
                                     options={partnerCompany}
                                     def_value="Select Partner Comapny"
                                     name="partner_id"
-                                    value={edit ? data.partner_id : partnerCompany.id}
+                                    value= {data.staff_id || ""} 
                                     onhandleChange={onHandleChange}
                                 />
                             </div>
@@ -141,7 +155,7 @@ export default function entry({ site, onHandleChange, onHandleSubmit, onClose, e
                                     def_value="Select Company Representive"
                                     name="staff_id"
                                     // value={site.comapny}
-                                    value={edit? data.staff_id : companyRepresentive.id}
+                                    value={edit ? data.staff_id : companyRepresentive.id}
                                     onhandleChange={onHandleChange}
                                 />
                             </div>
@@ -199,6 +213,14 @@ export default function entry({ site, onHandleChange, onHandleSubmit, onClose, e
                         >
                             Cancle
                         </FormBtn>
+                        {edit && (
+                            <FormBtn
+                                onClick={handleDelete}
+                                variant='delete'
+                            >
+                                Delete
+                            </FormBtn>
+                        )}
                         <FormBtn
                             type='submit'
                             variant='submit'

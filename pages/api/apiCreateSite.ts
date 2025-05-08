@@ -32,10 +32,10 @@ export async function  apiCreateSite({ site }) {
     return res;
 }
 
-export async function apiUpdateSite(id: string, { data }) {
+export async function apiUpdateSite(id: string, { site }) {
     const res = await fetcher(`/sites/update/${id}`, { 
       method: 'PATCH',
-      body: JSON.stringify(data),
+      body: JSON.stringify(site),
     });
     console.log(res);
     return res; 

@@ -2,26 +2,37 @@
 import { FormBtn } from '@/components/buttons';
 import styles from './style.module.scss';
 import { ImageInputComponent, InputComponent, SelectBoxComponent, TextAreaBox } from '@/components/inputs';
-import { apiCreateStaff, apiGetStaff, apiUpdateStaff } from '@/pages/api/apiCreateStaff';
+import { apiCreateStaff, apiGetStaff, apiSoftDelete, apiUpdateStaff } from '@/pages/api/apiCreateStaff';
 import { useEffect, useState } from 'react';
+import { useStaff } from '@/context/StaffContext';
+import { StaffList } from '@/types/staff'
 // import { useRouter } from 'next/router';
 // import { redirect,useRouter } from 'next/navigation';
 // import { Staff } from '@/type';
 
 // import { Value } from 'sass';
+const departments = [
+  { id: 'Management', name: 'Management' },
+  { id: 'HR', name: 'HR' },
+  { id: 'Accounting', name: 'Accounting' }
+];
 
-export const Entry = ({ onHandleImage, preview, staff, onHandleChange, edit, editRow, onClose }) => {
+const role = [
+  { id: "Adminstrator" , name: "Adminstrator" },
+  { id: "Manager", name: "Manager" },
+  { id: "On-Sites-Staff", name: "On-Sites-Staff" }
+];
+
+export const Entry = ({ 
+  onHandleImage, 
+  preview, 
+  staff, 
+  // onHandleChange, 
+  edit, editRow, onClose }) => {
   // const router = useRouter();
-  const departments = [
-    { id: 1, value: 'Management' },
-    { id: 2, value: 'HR' },
-    { id: 3, value: 'Accounting' }
-  ];
 
-  const role = [
-    { id: 1, value: "Adminstrator" },
-    { id: 2, value: "On-Sites-Staff" }
-  ];
+  const { fetchStaffId ,createStaff, updateStaff, softDeleteStaff } = useStaff();  
+
   const [data, setData] = useState({
     name: '',
     email: '',
@@ -32,13 +43,13 @@ export const Entry = ({ onHandleImage, preview, staff, onHandleChange, edit, edi
     address: '',
     image: '',
   });
-  
+
   useEffect(() => {
     if (edit && editRow) {
       (async () => {
         try {
-          const staffData = await apiGetStaff(editRow);
-          setData(staffData.data);
+          const staffData = await fetchStaffId(editRow);
+          setData(staffData);
         } catch (error) {
           console.error('Error fetching data:', error);
         }
@@ -58,39 +69,32 @@ export const Entry = ({ onHandleImage, preview, staff, onHandleChange, edit, edi
     }
   }, [edit])
 
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    let response;
     try {
-      if (edit) {
-        response = await apiUpdateStaff(editRow, { staff });
-      } else {
-        response = await apiCreateStaff({ staff });
-        console.log(response);
-      }
+      const isEditing = edit && editRow;
+      const result = isEditing
+        ? await updateStaff(editRow, data)
+        : await createStaff(data)
 
-      // if (response && response.ok) {
-      if (response) {
-        console.log(`Staff ${edit ? 'updated' : 'created'} successfully!`);
-        // router.push('/staff');
-        // redirect('/staff');
-        // router.push({
-        //   pathname: '/staff'
-        //   // query: { name: 'Someone' }
-        // })
-        onClose();
-      } else {
-        console.error(`Failed to ${edit ? 'update' : 'create'} staff`);
+      if(!result) {
+        console.error(`Failed to ${isEditing? 'update' : 'create'} staff.`)
       }
+      console.log(`Staff ${isEditing ? 'updated' : 'created'} successfully.`);
+      onClose();
     } catch (error) {
       console.error(`Error ${edit ? 'updating' : 'creating'} staff:`, error);
     }
-    // console.log(res);
-
 
   }
+
+    const onHandleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+      const { name, value } = event.target;
+  
+      setData((prev) => (
+        { ...prev, [name]: value }
+      ))
+    }
 
   return (
 
@@ -106,7 +110,7 @@ export const Entry = ({ onHandleImage, preview, staff, onHandleChange, edit, edi
                   type="text"
                   placeholder={'Enter Staff Name'}
                   name="name"
-                  value={edit ? data.name : staff.name}
+                  value={data.name}
                   onhandleChange={onHandleChange}
 
                 />
@@ -118,7 +122,7 @@ export const Entry = ({ onHandleImage, preview, staff, onHandleChange, edit, edi
                   type="text"
                   placeholder={'Enter Staff Email'}
                   name="email"
-                  value={edit ? data.email : staff.email}
+                  value={data.email}
                   onhandleChange={onHandleChange}
 
                 />
@@ -130,9 +134,8 @@ export const Entry = ({ onHandleImage, preview, staff, onHandleChange, edit, edi
                   type="text"
                   placeholder={'Enter Staff Password'}
                   name="password"
-                  value={edit ? data.password : staff.password}
+                  value={data.password} 
                   onhandleChange={onHandleChange}
-                // style={{ display: edit ? "none" : "block" }}
                 />
               </div>
               <div className={styles.row}>
@@ -142,7 +145,7 @@ export const Entry = ({ onHandleImage, preview, staff, onHandleChange, edit, edi
                   type="number"
                   placeholder={'Enter Staff Phone No'}
                   name="phone"
-                  value={edit ? data.phone : staff.phone}
+                  value={data.phone}
                   onhandleChange={onHandleChange}
 
                 />
@@ -154,9 +157,7 @@ export const Entry = ({ onHandleImage, preview, staff, onHandleChange, edit, edi
                   onHandleImage={onHandleImage}
                   required={false}
                   preview={edit ? data.image : preview}
-
-
-
+                  // preview={edit ? data.image : preview}
                 />
               </div>
               <div className={styles.row}>
@@ -164,9 +165,9 @@ export const Entry = ({ onHandleImage, preview, staff, onHandleChange, edit, edi
                   label={"Department"}
                   options={departments}
                   required={true}
-                  def_value="Select Department "
+                  def_value="Select Department"
                   name="department"
-                  // value={staff.department.value}
+                  value={data.department}
                   onhandleChange={onHandleChange}
                 />
               </div>
@@ -178,7 +179,7 @@ export const Entry = ({ onHandleImage, preview, staff, onHandleChange, edit, edi
                   required={true}
                   def_value="Select Role "
                   name="role"
-                  // value={staff.role}
+                  value={data.role}
                   onhandleChange={onHandleChange}
                 />
               </div>
@@ -189,7 +190,7 @@ export const Entry = ({ onHandleImage, preview, staff, onHandleChange, edit, edi
                   placeholder="Enter Staff Address"
                   required={false}
                   name="address"
-                  value={edit ? data.address : staff.address}
+                  value={data.address}
                   onhandleChange={onHandleChange}
                 />
               </div>
@@ -201,6 +202,19 @@ export const Entry = ({ onHandleImage, preview, staff, onHandleChange, edit, edi
             >
               Cancel
             </FormBtn>
+            {edit && (
+              <FormBtn 
+                onClick={async () => {
+                  softDeleteStaff(editRow!);
+                  onClose();
+                  
+                  }
+                }
+                variant='delete'
+              >
+                Delete
+              </FormBtn>
+            )}
             <FormBtn
               type='submit'
               variant='submit'

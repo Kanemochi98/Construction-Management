@@ -19,7 +19,7 @@ export async function apiGetVehicle(id: string) {
 } 
 
 export async function  apiCreateVehicle({ vehicle }) {
-    // console.log(vehicle);
+   
     const res = await fetcher('/vehicles/create',{
         method: 'POST',
         body: JSON.stringify(vehicle),

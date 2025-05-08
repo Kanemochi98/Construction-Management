@@ -18,25 +18,30 @@ export async function apiGetPartner(id: string) {
     return res;
 } 
 
-export async function  apiCreatePartner({ data }) {
+export async function  apiCreatePartner({ partner }) {
     console.log('parter Api');
-    console.log(data);
-    // const res = await fetcher('/partners/create',{
-    //     method: 'POST',
-    //     body: JSON.stringify(data),
-    //     headers: {
-    //         'Content-Type': 'application/json',
-    //     }
-    // });
-    return data;
-    // return res;
+    console.log(partner);
+    const res = await fetcher('/partners/create',{
+        method: 'POST',
+        body: JSON.stringify(partner),
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    });
+
+    // if (!res.ok) {
+    //     console.error('Error data:', partner); 
+    //     throw new Error(partner.message || JSON.stringify(partner));
+    //   }
+    // return data;
+    return res;
     
 }
 
-export async function apiUpdatePartner(id: string, { data }) {
+export async function apiUpdatePartner(id: string, { partner }) {
     const res = await fetcher(`/partners/update/${id}`, { 
       method: 'PATCH',
-      body: JSON.stringify(data),
+      body: JSON.stringify(partner),
     });
     console.log(res);
     return res; 

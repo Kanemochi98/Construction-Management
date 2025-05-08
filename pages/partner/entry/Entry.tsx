@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import styles from './style.module.scss'
 import { FormBtn } from '@/components/buttons'
 import { InputComponent, TextAreaBox } from '@/components/inputs'
-import { apiCreatePartner, apiGetPartner, apiUpdatePartner } from '@/pages/api/apiCreatePartner';
+import { apiCreatePartner, apiGetPartner, apiSoftDelete, apiUpdatePartner } from '@/pages/api/apiCreatePartner';
 // import Partner from '..'
 
 export const Entry = ({ onHandleChange, partner, edit, editRow, onClose }) => {
@@ -58,8 +58,24 @@ export const Entry = ({ onHandleChange, partner, edit, editRow, onClose }) => {
         }
         // console.log(res);
 
-
     }
+
+    const handleDelete = async () => {
+        if (edit && editRow ) {
+          try{
+            const response = await apiSoftDelete(editRow);
+            if (response) {
+              console.log('Staff Deleted successfully!');
+              onClose();
+            } else {
+              console.error('Failed to delete staff ');
+            }
+          } catch (error) {
+            console.error('Error deleting staff:', error)
+          }
+        }
+      }
+
     return (
         <div className={styles.container}>
             <form
@@ -121,6 +137,14 @@ export const Entry = ({ onHandleChange, partner, edit, editRow, onClose }) => {
                     >
                         Cancel
                     </FormBtn>
+                    {edit && (
+              <FormBtn 
+                onClick={handleDelete}
+                variant='delete'
+              >
+                Delete
+              </FormBtn>
+            )}
                     <FormBtn
                         type='submit'
                         variant='submit'

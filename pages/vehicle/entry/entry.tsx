@@ -2,22 +2,22 @@ import { FormBtn } from '@/components/buttons'
 import Style from './style.module.scss'
 import { DateInput, ImageInputComponent, InputComponent, SelectBoxComponent, TextAreaBox } from '@/components/inputs'
 import { DataList } from '@/components/list';
-import { apiCreateVehicle, apiGetVehicle, apiUpdateVehicle } from '@/pages/api/apiCreateVehicle';
+import { apiCreateVehicle, apiGetVehicle, apiSoftDelete, apiUpdateVehicle } from '@/pages/api/apiCreateVehicle';
 import { useEffect, useState } from 'react';
 
 export const Entry = ({ edit, editRow, onClose, vehicle, onHandelChange, onHandleImage, onHandleSubmit, preview }) => {
 
     const vehicleType = [
-        { id: 1, name: 'Car' },
-        { id: 2, name: 'Bike' },
-        { id: 3, name: 'Truck' },
-        { id: 4, name: 'Bus' },
-        { id: 5, name: 'Van' },
-        { id: 6, name: 'SUV' },
-        { id: 7, name: 'Motorcycle' },
-        { id: 8, name: 'Scooter' },
-        { id: 9, name: 'Bicycle' },
-        { id: 10, name: 'Tractor' }
+        { id: 'Car', name: 'Car' },
+        { id: 'Bike', name: 'Bike' },
+        { id: 'Truck', name: 'Truck' },
+        { id: 'Bus', name: 'Bus' },
+        { id: 'Van', name: 'Van' },
+        { id: 'SUV', name: 'SUV' },
+        { id: 'Motorcycle', name: 'Motorcycle' },
+        { id: 'Scooter', name: 'Scooter' },
+        { id: 'Bicycle', name: 'Bicycle' },
+        { id: 'Tractor', name: 'Tractor' }
     ];
     const [data, setData] = useState({
         image: "",
@@ -76,6 +76,22 @@ export const Entry = ({ edit, editRow, onClose, vehicle, onHandelChange, onHandl
 
 
     }
+
+    const handleDelete = async () => {
+        if (edit && editRow ) {
+          try{
+            const response = await apiSoftDelete(editRow);
+            if (response) {
+              console.log('Staff Deleted successfully!');
+              onClose();
+            } else {
+              console.error('Failed to delete staff ');
+            }
+          } catch (error) {
+            console.error('Error deleting staff:', error)
+          }
+        }
+      }
 
     // console.log(editRow)
 
@@ -194,6 +210,14 @@ export const Entry = ({ edit, editRow, onClose, vehicle, onHandelChange, onHandl
                         >
                             Cancel
                         </FormBtn>
+                        {edit && (
+              <FormBtn 
+                onClick={handleDelete}
+                variant='delete'
+              >
+                Delete
+              </FormBtn>
+            )}
                         <FormBtn
                             type='submit'
                             variant='submit'

@@ -28,8 +28,6 @@ export async function apiGetStaff(id: string) {
 } 
 
 export async function  apiCreateStaff({ staff }) {
-    console.log('staff api');
-    console.log(staff);
     const res = await fetcher('/staffs/create',{
         method: 'POST',
         body: JSON.stringify(staff),
@@ -41,10 +39,12 @@ export async function  apiCreateStaff({ staff }) {
     return res;
 }
 
-export async function apiUpdateStaff(id: string, { staff }) {
+export async function apiUpdateStaff(id: string, { data }) {
+    console.log(`API`);
+    console.log(data);
     const res = await fetcher(`/staffs/update/${id}`, { 
       method: 'PATCH',
-      body: JSON.stringify(staff),
+      body: JSON.stringify(data),
     });
     console.log(res);
     return res; 

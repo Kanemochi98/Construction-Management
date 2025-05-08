@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styles from "./style.module.scss"; 
 import { ImageAddIcon, SearchIcon } from "../icons";
-
+import { useStaff } from "@/context/StaffContext";
 export function FormInput({ 
   label, 
   type = "text", 
@@ -9,12 +9,13 @@ export function FormInput({
   name, 
   required = false,
   placeholder, 
-  value, 
-  onChange, 
+  // value, 
+  // onChange, 
   isTextarea = false,
   isSelect = false,  
   options = []       
 }: any) {
+  const { value, onChange } = useStaff();
   return (
     <div className={styles.form_group}>
       <label htmlFor={id}>{label}</label>
@@ -98,8 +99,9 @@ export const SearchBar = ({onSearch}) => {
 export const InputComponent = ({
     name, value, type, label, required, placeholder, onhandleChange}) => {
 
-      // console.log(onhandleChange)
-      // console.log(value)
+      console.log(onhandleChange)
+        console.log(`value`)
+        console.log(value);
       return (
     <>
       <div className={styles.input_container}>
@@ -178,7 +180,7 @@ export const SelectBoxComponent = ({label, required, options,name ,value,  onhan
           <option value="" default disable>{getDefaultOptionText(def_value, placeholder)}</option>
           {
            options.map((option) => (
-            <option key={option.id} value={option.id}>{option.name}</option>
+            <option key={option.id} value={option.value}>{option.name}</option>
            ))
           }
         </select>

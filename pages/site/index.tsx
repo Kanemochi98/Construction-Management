@@ -10,22 +10,13 @@ import { DataList } from '@/components/list';
 import { Modal } from '@/components/modal/Modal';
 import Entry from './entry/entry';
 import { apiGetSites } from '../api/apiCreateSite';
+import { Site } from '@/types/site'
+import { useSite } from '@/context/SiteContext'
 // import { Entry } from '../site/entry';
-
-type Site = {
-  name: string,
-  partner_id: string | number,
-  staff_id: string | number,
-  startDate: string,
-  endDate: string,
-  address: string,
-  memo: string
-}
-
 
 export default function Site() {
 
-
+  const { siteList, fetchSiteId } = useSite();
   const [isMobile, setIsMobile] = useState(false);
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -48,32 +39,6 @@ export default function Site() {
     }
   }, []);
 
-
-  const [loading, setLoading] = useState(false);
-  const [data, setData] = useState([]);
-  useEffect(() => {
-    (async () => {
-      try {
-        const siteData = await apiGetSites();
-
-        const transformedData =await siteData.data.map(item => ({
-          ...item,
-          partner: item.partner?.name || '', 
-          staff: item.staff?.name || '', 
-        }));
-
-        // console.log(siteData.data);
-        setData(transformedData);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-      setLoading(false);
-    })();
-  }, [loading])
-
-
-  console.log("Site Relation");
-  console.log(data);
   // Search 
   const [searchValue, setSearchValue] = useState('');
   const handlerSearchChange = (event) => {
@@ -97,8 +62,14 @@ export default function Site() {
   const [activeEdit, setActiveEdit] = useState(false);
   const [eidtRow, setEditRow] = useState(null);
   const handleEdit = (id) => {
-    setActiveEdit(true)
-    setEditRow(id)
+    try {
+      const { data } = fetchSiteId(id);
+      setSite(data); // Update site data in parent
+      setEditRow(id);
+      setActiveEdit(true);
+    } catch (error) {
+      console.error('Error fetching site:', error);
+    }
   }
 
   // Filter
@@ -115,9 +86,11 @@ export default function Site() {
     image: "",
     name: "SITE NAME",
     partner: "COMPANY NAME",
-    staff: "MANAGER",
+    // staff: "MANAGER",
     address: "ADDRESS",
-    memo: "NOTE"
+    startDate: "START DATE",
+    endDate: "END DATE",
+    // memo: "NOTE",
 
   };
 
@@ -141,7 +114,9 @@ export default function Site() {
     startDate: "",
     endDate: "",
     address: "",
-    memo: ""
+    memo: "",
+    partner: "",
+    staff: "",
   })
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -150,12 +125,6 @@ export default function Site() {
       { ...prev, [name]: value }
     ))
   }
-
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    console.log(site)
-  }
-
 
   return (
     <Layout>
@@ -183,7 +152,7 @@ export default function Site() {
             <div className={Styles.data_container}>
               <DataList
                 cols={col}
-                datas={data}
+                datas={siteList}
                 isMobile={isMobile}
                 // edit={activeEdit}   
                 onEdit={handleEdit}
@@ -200,19 +169,16 @@ export default function Site() {
             >
 
               <Entry
-                site={site}
-                onHandleChange={handleChange}
-                onhandleSubmit={handleSubmit}
+                // site={site}
+                // onHandleChange={handleChange}
+                // onhandleSubmit={handleSubmit}
                 edit={activeEdit}
                 editRow={eidtRow}
                 onClose={() => {
                   setActiveAdd(false)
                   setActiveEdit(false)
-                  setLoading(true)
                 }}
-
               />
-
             </Modal>
           </div>
       }

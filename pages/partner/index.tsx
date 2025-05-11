@@ -7,15 +7,17 @@ import Styles from './styles.module.scss'
 import { SearchComponent } from '@/components/search_component';
 import { DataList } from '@/components/list';
 import { Modal } from '@/components/modal/Modal';
-import { Partner } from '@/types/partner'
 import { apiGetPartners } from '../api/apiCreatePartner';
 import { Entry } from './entry/Entry';
+import  { usePartner } from '@/context/PartnerContex'
+import type { Partner } from '@/types/partner'
 
 export default function Partner() {
 
-  const [loading, setLoading] = useState(false);
-  const [data, setData] = useState([]);
+  const { partnerList,fetchPartner } = usePartner();
   const [isMobile, setIsMobile] = useState(false);
+  console.log("List Partner");
+  console.log(partnerList)
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const handleResize = () => {
@@ -36,18 +38,6 @@ export default function Partner() {
       };
     }
   }, []);
-
-  useEffect(() => {
-    (async () => {
-      try {
-        const partnerData = await apiGetPartners();
-        setData(partnerData.data);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-      setLoading(false);
-    })();
-  }, [loading]);
 
   // Search 
   const [searchValue, setSearchValue] = useState('');
@@ -143,12 +133,6 @@ export default function Partner() {
       { ...prev, [name]: value }
     ))
   }
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    console.log(partner);
-  }
-
-  // console.log(handleChange)
 
   return (
     <Layout>
@@ -176,7 +160,7 @@ export default function Partner() {
             <div className={Styles.data_container}>
               <DataList
                 cols={col}
-                datas={data}
+                datas={partnerList}
                 isMobile={isMobile}
                 // edit={activeEdit}   
                 onEdit={handleEdit}
@@ -200,7 +184,6 @@ export default function Partner() {
                 onClose={() => {
                   setActiveAdd(false)
                   setActiveEdit(false)
-                  setLoading(true)
                 }}
               />
             </Modal>

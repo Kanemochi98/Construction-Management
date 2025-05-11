@@ -7,7 +7,7 @@ import type { ViewType } from "@/types/schedule"
 
 
 export function FormBtn({ type = "button", variant = "default", children, onClick } : any) {
-  const classNames = `${style.btn} ${style[`${variant}_btn`]}`;
+  const classNames = `${style[`${variant}_btn`]} ${style.btn} `;
 
   return (
     <button type={type} className={classNames} onClick={onClick}>

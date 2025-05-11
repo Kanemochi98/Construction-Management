@@ -180,7 +180,7 @@ export const SelectBoxComponent = ({label, required, options,name ,value,  onhan
           <option value="" default disable>{getDefaultOptionText(def_value, placeholder)}</option>
           {
            options.map((option) => (
-            <option key={option.id} value={option.value}>{option.name}</option>
+            <option key={option.id} value={option.value ?? option.id}>{option.name}</option>
            ))
           }
         </select>

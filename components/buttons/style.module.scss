@@ -12,7 +12,7 @@
 }
 
 .btn {
-    min-width: 130px;
+    // min-width: 130px;
     padding: 10px 20px;
     border: none;
     border-radius: 5px;
@@ -42,7 +42,10 @@
   }
   .delete_btn{
     background-color: var.$delete-btn-bg-color;
-    color: var.$delete-btn-text-color   ;
+    color: var.$delete-btn-text-color;
+    position: absolute;
+    right: 10;
+    border: none;
   }
   // AZM 
 

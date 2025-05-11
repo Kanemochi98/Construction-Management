@@ -19,8 +19,6 @@ export async function apiGetPartner(id: string) {
 } 
 
 export async function  apiCreatePartner({ partner }) {
-    console.log('parter Api');
-    console.log(partner);
     const res = await fetcher('/partners/create',{
         method: 'POST',
         body: JSON.stringify(partner),
@@ -43,6 +41,7 @@ export async function apiUpdatePartner(id: string, { partner }) {
       method: 'PATCH',
       body: JSON.stringify(partner),
     });
+    console.log('API');
     console.log(res);
     return res; 
 }

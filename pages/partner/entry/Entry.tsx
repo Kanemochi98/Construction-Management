@@ -2,11 +2,12 @@ import React, { useEffect, useState } from 'react'
 import styles from './style.module.scss'
 import { FormBtn } from '@/components/buttons'
 import { InputComponent, TextAreaBox } from '@/components/inputs'
-import { apiCreatePartner, apiGetPartner, apiSoftDelete, apiUpdatePartner } from '@/pages/api/apiCreatePartner';
+import { usePartner } from '@/context/PartnerContex';
 // import Partner from '..'
 
-export const Entry = ({ onHandleChange, partner, edit, editRow, onClose }) => {
-    // console.log(onHandelChange)
+export const Entry = ({ partner, edit, editRow, onClose }) => {
+
+    const { createPartner, updatePartner, softDeletePartner, fetchPartnerId } = usePartner();
     const [data, setData] = useState({
         name: "",
         fax: "",
@@ -19,8 +20,8 @@ export const Entry = ({ onHandleChange, partner, edit, editRow, onClose }) => {
         if (edit && editRow) {
             (async () => {
                 try {
-                    const partnerData = await apiGetPartner(editRow);
-                    setData(partnerData.data);
+                    const partnerData = await fetchPartnerId(editRow);
+                    setData(partnerData);
                 } catch (error) {
                     console.error('Error fetching data:', error);
                 }
@@ -37,44 +38,46 @@ export const Entry = ({ onHandleChange, partner, edit, editRow, onClose }) => {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        console.log(partner);
-        let response;
         try {
-            if (edit) {
-                response = await apiUpdatePartner(editRow, { partner });
-            } else {
-                response = await apiCreatePartner({partner});
-                console.log(response);
-            }
+            const isEditing = edit && editRow;
+            const result = isEditing
+                ? await updatePartner(editRow, data)
+                : await createPartner(data)
 
-            if (response) {
-                console.log(`Partner ${edit ? 'updated' : 'created'} successfully!`);
-                onClose();
-            } else {
-                console.error(`Failed to ${edit ? 'update' : 'create'} partner`);
+            if (!result) {
+                console.error(`Failed to ${isEditing ? 'update' : 'create'} partner.`)
             }
+            console.log(`Partner ${isEditing ? 'updated' : 'created'} successfully.`);
+            onClose();
         } catch (error) {
             console.error(`Error ${edit ? 'updating' : 'creating'} partner:`, error);
         }
-        // console.log(res);
 
     }
 
-    const handleDelete = async () => {
-        if (edit && editRow ) {
-          try{
-            const response = await apiSoftDelete(editRow);
-            if (response) {
-              console.log('Staff Deleted successfully!');
-              onClose();
-            } else {
-              console.error('Failed to delete staff ');
-            }
-          } catch (error) {
-            console.error('Error deleting staff:', error)
-          }
-        }
-      }
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = event.target;
+        setData((prev) => (
+            { ...prev, [name]: value }
+        ))
+    }
+
+
+    // const handleDelete = async () => {
+    //     if (edit && editRow ) {
+    //       try{
+    //         const response = await apiSoftDelete(editRow);
+    //         if (response) {
+    //           console.log('Partner Deleted successfully!');
+    //           onClose();
+    //         } else {
+    //           console.error('Failed to delete partner ');
+    //         }
+    //       } catch (error) {
+    //         console.error('Error deleting partner:', error)
+    //       }
+    //     }
+    //   }
 
     return (
         <div className={styles.container}>
@@ -90,8 +93,8 @@ export const Entry = ({ onHandleChange, partner, edit, editRow, onClose }) => {
                                 placeholder="Enter Company Name"
                                 required={true}
                                 name="name"
-                                value={edit ? data.name : partner.name}
-                                onhandleChange={onHandleChange}
+                                value={data.name}
+                                onhandleChange={handleChange}
                             />
                         </div>
                         <div className={styles.row}>
@@ -100,8 +103,8 @@ export const Entry = ({ onHandleChange, partner, edit, editRow, onClose }) => {
                                 placeholder="Enter Fax Number"
                                 required={false}
                                 name="fax"
-                                value={edit ? data.fax : partner.fax}
-                                onhandleChange={onHandleChange}
+                                value={data.fax}
+                                onhandleChange={handleChange}
                             />
                         </div>
                     </div>
@@ -112,8 +115,8 @@ export const Entry = ({ onHandleChange, partner, edit, editRow, onClose }) => {
                                 placeholder="Enter Phone Number"
                                 required={false}
                                 name="phone"
-                                value={edit ? data.phone : partner.phone}
-                                onhandleChange={onHandleChange}
+                                value={data.phone}
+                                onhandleChange={handleChange}
                             />
                         </div>
                         <div className={styles.row}>
@@ -122,8 +125,8 @@ export const Entry = ({ onHandleChange, partner, edit, editRow, onClose }) => {
                                 placeholder="Enter Address"
                                 required={false}
                                 name="address"
-                                value={edit ? data.address : partner.address}
-                                onhandleChange={onHandleChange}
+                                value={data.address}
+                                onhandleChange={handleChange}
                             />
                         </div>
                     </div>
@@ -138,13 +141,16 @@ export const Entry = ({ onHandleChange, partner, edit, editRow, onClose }) => {
                         Cancel
                     </FormBtn>
                     {edit && (
-              <FormBtn 
-                onClick={handleDelete}
-                variant='delete'
-              >
-                Delete
-              </FormBtn>
-            )}
+                        <FormBtn
+                            onClick={async () => {
+                                softDeletePartner(editRow!);
+                                onClose();
+                            }}
+                            variant='delete'
+                        >
+                            Delete
+                        </FormBtn>
+                    )}
                     <FormBtn
                         type='submit'
                         variant='submit'

@@ -3,46 +3,38 @@ import React, { useEffect, useState } from 'react'
 import styles from './style.module.scss';
 import { DateInput, InputComponent, SelectBoxComponent, TextAreaBox } from '@/components/inputs';
 import { FormBtn } from '@/components/buttons';
+import { TrashIcon } from '@/components/icons';
 import { apiCreateSite, apiGetSite, apiUpdateSite, apiSoftDelete } from '@/pages/api/apiCreateSite';
 import { apiGetPartners } from '@/pages/api/apiCreatePartner';
 import { apiGetStaffs } from '@/pages/api/apiCreateStaff';
+import { useSite } from '@/context/SiteContext';
+import { Site } from '@/types/site';
+import { ConfirmationModal } from '@/components/modal/ConfirmationModal';
 
-export default function entry({ site, onHandleChange, onHandleSubmit, onClose, edit, editRow }) {
-    // export const Entry = ({ site, onHandleChange, onHandleSubmit, onClose, edit, editRow }) => {
-    // console.log(site)
-    console.log(editRow)
-    // const partner_company = [
-    //     { id: 1, value: 'Company 1' },
-    //     { id: 2, value: 'company 2' },
-    //     { id: 3, value: 'Conpany 3' },
-    // ]
+export default function entry({ site, onHandleSubmit, onClose, edit, editRow }) {
+    // export const Entry = ({ site, handleChange, onHandleSubmit, onClose, edit, editRow }) => {
 
-    // const company_representive = [
-    //     { id: 1, value: 'Person A' },
-    //     { id: 2, value: 'Person B' },
-    //     { id: 3, value: 'Person C' },
-    // ];
-    const [companyRepresentive, setCompanyRepresentive] = useState([]);
-    const [partnerCompany, setpartnerCompany] = useState([]);
+    const { createSite, updateSite, softDeleteSite, fetchSiteId } = useSite();
+    const [staff, setStaff] = useState([]);
+    const [partner, setPartner] = useState([]);
+    const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
-    
+    console.log('Site Entry :', site)
     useEffect(() => {
         (async () => {
             try {
                 const company_representive = await apiGetStaffs();
                 const partner_company = await apiGetPartners();
-                setCompanyRepresentive(company_representive.data);
-                setpartnerCompany(partner_company.data);
+                setStaff(company_representive.data);
+                setPartner(partner_company.data);
 
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
         })();
     }, [])
-    console.log("Site Entry");
-    console.log(companyRepresentive);
-    console.log(partnerCompany);
-    const [data, setData] = useState({
+
+    const [data, setData] = useState<Site>({
         name: "",
         partner_id: "",
         staff_id: "",
@@ -50,14 +42,26 @@ export default function entry({ site, onHandleChange, onHandleSubmit, onClose, e
         endDate: "",
         address: "",
         memo: "",
+        partner: "",
+        staff: "",
     })
 
     useEffect(() => {
         if (edit && editRow) {
             (async () => {
                 try {
-                    const siteData = await apiGetSite(editRow);
-                    setData(siteData.data);
+                    const siteData = await fetchSiteId(editRow);
+                    setData({
+                        name: siteData.name || "",
+                        partner_id: siteData.partner_id || "",
+                        staff_id: siteData.staff_id || "",
+                        startDate: siteData.startDate || "",
+                        endDate: siteData.endDate || "",
+                        address: siteData.address || "",
+                        memo: siteData.memo || "",
+                        partner: siteData.partner?.name || "",
+                        staff: siteData.staff?.name || "",
+                    });
                 } catch (error) {
                     console.error('Error fetching data:', error);
                 }
@@ -67,57 +71,56 @@ export default function entry({ site, onHandleChange, onHandleSubmit, onClose, e
                 name: "",
                 partner_id: "",
                 staff_id: "",
-                start_date: "",
-                end_date: "",
+                startDate: "",
+                endDate: "",
                 address: "",
-                memo: ""
+                memo: "",
+                partner: "",
+                staff: "",
             })
         }
     }, [edit])
 
-    console.log(data);
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        console.log('Site Submit :',data);
+        // try {
+        //     const isEditing = edit && editRow;
+        //     const result = isEditing
+        //         ? await updateSite(editRow, data)
+        //         : await createSite(data)
 
-        let response;
-        try {
-            if (edit) {
-                response = await apiUpdateSite(editRow, { site });
-            } else {
-                response = await apiCreateSite({ site });
-                console.log(response);
-            }
-
-            if (response) {
-                console.log(`Staff ${edit ? 'updated' : 'created'} successfully!`);
-                onClose();
-            } else {
-                console.error(`Failed to ${edit ? 'update' : 'create'} site`);
-            }
-        } catch (error) {
-            console.error(`Error ${edit ? 'updating' : 'creating'} site:`, error);
-        }
-        // console.log(site);
+        //     if (!result) {
+        //         console.error(`Failed to ${isEditing ? 'update' : 'create'} site.`)
+        //     }
+        //     console.log(`Site ${isEditing ? 'updated' : 'created'} successfully.`);
+        //     onClose();
+        // } catch (error) {
+        //     console.error(`Error ${edit ? 'updating' : 'creating'} site:`, error);
+        // }
     }
 
     const handleDelete = async () => {
-        if (edit && editRow) {
-            try {
-                const response = await apiSoftDelete(editRow);
-                if (response) {
-                    console.log('Staff Deleted successfully!');
-                    onClose();
-                } else {
-                    console.error('Failed to delete staff ');
-                }
-            } catch (error) {
-                console.error('Error deleting staff:', error)
-            }
-        }
+        await softDeleteSite(editRow);
+        setShowDeleteConfirm(false);
+        onClose();
+    }
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = event.target;
+        setData((prev) => (
+            { ...prev, [name]: value }
+        ))
     }
 
     return (
         <>
+            {showDeleteConfirm && (
+                <ConfirmationModal
+                    message="Are you sure you want to delete this site?"
+                    onConfirm={handleDelete}
+                    onCancel={() => setShowDeleteConfirm(false)}
+                />
+            )}
             <div className={styles.container} >
                 <form className={styles.form_container} onSubmit={handleSubmit}>
 
@@ -129,8 +132,8 @@ export default function entry({ site, onHandleChange, onHandleSubmit, onClose, e
                                     required={true}
                                     placeholder="Enter Site Name"
                                     name="name"
-                                    value={edit ? data.name : site.name}
-                                    onhandleChange={onHandleChange}
+                                    value={data.name}
+                                    onhandleChange={handleChange}
 
 
                                 />
@@ -139,11 +142,12 @@ export default function entry({ site, onHandleChange, onHandleSubmit, onClose, e
                                 <SelectBoxComponent
                                     label="Partner Company"
                                     required={true}
-                                    options={partnerCompany}
+                                    options={partner}
                                     def_value="Select Partner Comapny"
-                                    name="partner_id"
-                                    value= {data.staff_id || ""} 
-                                    onhandleChange={onHandleChange}
+                                    name={edit ? "partner" : "partner_id"}
+                                    value={data.partner_id}
+                                    // value={edit ? data.partner : data.partner_id}
+                                    onhandleChange={handleChange}
                                 />
                             </div>
 
@@ -151,12 +155,12 @@ export default function entry({ site, onHandleChange, onHandleSubmit, onClose, e
                                 <SelectBoxComponent
                                     label="Company Representive"
                                     required={true}
-                                    options={companyRepresentive}
+                                    options={staff}
                                     def_value="Select Company Representive"
-                                    name="staff_id"
-                                    // value={site.comapny}
-                                    value={edit ? data.staff_id : companyRepresentive.id}
-                                    onhandleChange={onHandleChange}
+                                    name={edit ? "staff" : "staff_id"}
+                                    value={data.staff_id}
+                                    // value={edit? data.staff: data.staff_id}
+                                    onhandleChange={handleChange}
                                 />
                             </div>
 
@@ -168,8 +172,9 @@ export default function entry({ site, onHandleChange, onHandleSubmit, onClose, e
                                     <DateInput
                                         label="Start Date"
                                         name="startDate"
-                                        value={edit ? data.startDate.substring(0, 10) : site.startDate}
-                                        onhandleChange={onHandleChange}
+                                        value={data.startDate.substring(0, 10)}
+                                        // value={edit ? data.startDate.substring(0, 10) : site.startDate}
+                                        onhandleChange={handleChange}
 
                                     />
                                 </div>
@@ -177,8 +182,9 @@ export default function entry({ site, onHandleChange, onHandleSubmit, onClose, e
                                     <DateInput
                                         label="End Date"
                                         name="endDate"
-                                        value={edit ? data.endDate.substring(0, 10) : site.endDate}
-                                        onhandleChange={onHandleChange}
+                                        value={data.endDate.substring(0, 10)}
+                                        // value={edit ? data.endDate.substring(0, 10) : site.endDate}
+                                        onhandleChange={handleChange}
 
                                     />
                                 </div>
@@ -190,8 +196,8 @@ export default function entry({ site, onHandleChange, onHandleSubmit, onClose, e
                                     placeholder="Enter Site Address"
                                     required={false}
                                     name="address"
-                                    value={edit ? data.address : site.address}
-                                    onhandleChange={onHandleChange}
+                                    value={data.address}
+                                    onhandleChange={handleChange}
                                 />
                             </div>
                             <div className={styles.row}>
@@ -199,8 +205,8 @@ export default function entry({ site, onHandleChange, onHandleSubmit, onClose, e
                                     label="Note"
                                     placeholder="Enter Note"
                                     name="memo"
-                                    value={edit ? data.memo : site.memo}
-                                    onhandleChange={onHandleChange}
+                                    value={data.memo}
+                                    onhandleChange={handleChange}
                                 />
                             </div>
                         </div>
@@ -215,10 +221,13 @@ export default function entry({ site, onHandleChange, onHandleSubmit, onClose, e
                         </FormBtn>
                         {edit && (
                             <FormBtn
-                                onClick={handleDelete}
+                                onClick={async () => {
+                                    softDeleteSite(editRow);
+                                    onClose();
+                                }}
                                 variant='delete'
                             >
-                                Delete
+                                <TrashIcon />
                             </FormBtn>
                         )}
                         <FormBtn

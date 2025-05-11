@@ -4,9 +4,10 @@ import { DateInput, ImageInputComponent, InputComponent, SelectBoxComponent, Tex
 import { DataList } from '@/components/list';
 import { apiCreateVehicle, apiGetVehicle, apiSoftDelete, apiUpdateVehicle } from '@/pages/api/apiCreateVehicle';
 import { useEffect, useState } from 'react';
+import { useVehicle } from '@/context/VehicleContext'
+export const Entry = ({ edit, editRow, onClose, vehicle, onHandleImage, onHandleSubmit, preview }) => {
 
-export const Entry = ({ edit, editRow, onClose, vehicle, onHandelChange, onHandleImage, onHandleSubmit, preview }) => {
-
+    const { createVehicle, updateVehicle, softDeleteVehicle } = useVehicle();
     const vehicleType = [
         { id: 'Car', name: 'Car' },
         { id: 'Bike', name: 'Bike' },
@@ -28,72 +29,54 @@ export const Entry = ({ edit, editRow, onClose, vehicle, onHandelChange, onHandl
         licenEndDate: ""
     });
     useEffect(() => {
-        if(edit && editRow)  {
-        (async () => {
-            try {
-                const vehicleData = await apiGetVehicle(editRow);
-                setData(vehicleData.data);
-                // setEditImg(data.image);
-            } catch (error) {
-                console.error('Error fetching data:', error);
-            }
-        })();
-    } else {
-        setData({
-            image: "",
-            model: "",
-            type: "",
-            memo: "",
-            InsuranceEndDate: "",
-            licenEndDate: ""
-          });
-        //   setEditImg("");
-    }
+        if (edit && editRow) {
+            (async () => {
+                try {
+                    const vehicleData = await apiGetVehicle(editRow);
+                    setData(vehicleData.data);
+                    // setEditImg(data.image);
+                } catch (error) {
+                    console.error('Error fetching data:', error);
+                }
+            })();
+        } else {
+            setData({
+                image: "",
+                model: "",
+                type: "",
+                memo: "",
+                InsuranceEndDate: "",
+                licenEndDate: ""
+            });
+            //   setEditImg("");
+        }
     }, [edit, editRow])
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-
-        let response;
         try {
-            if (edit) {
-                response = await apiUpdateVehicle(editRow, { vehicle });
-            } else {
-                response = await apiCreateVehicle({ vehicle });
-                console.log(response);
-            }
+            const isEditing = edit && editRow;
+            const result = isEditing
+                ? await updateVehicle(editRow, data)
+                : await createVehicle(data)
 
-            if (response) {
-                console.log(`Vehicle ${edit ? 'updated' : 'created'} successfully!`);
-                onClose();
-            } else {
-                console.error(`Failed to ${edit ? 'update' : 'create'} vehicle`);
+            if (!result) {
+                console.error(`Failed to ${isEditing ? 'update' : 'create'} vehicle.`)
             }
+            console.log(`Vehicle ${isEditing ? 'updated' : 'created'} successfully.`);
+            onClose();
         } catch (error) {
             console.error(`Error ${edit ? 'updating' : 'creating'} vehicle:`, error);
         }
-        // console.log(res);
-
-
     }
 
-    const handleDelete = async () => {
-        if (edit && editRow ) {
-          try{
-            const response = await apiSoftDelete(editRow);
-            if (response) {
-              console.log('Staff Deleted successfully!');
-              onClose();
-            } else {
-              console.error('Failed to delete staff ');
-            }
-          } catch (error) {
-            console.error('Error deleting staff:', error)
-          }
-        }
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = event.target;
+    
+        setData((prev) => (
+          { ...prev, [name]: value }
+        ))
       }
-
-    // console.log(editRow)
 
     return (
         <>
@@ -111,8 +94,8 @@ export const Entry = ({ edit, editRow, onClose, vehicle, onHandelChange, onHandl
                                     label={"Model"}
                                     required={true}
                                     placeholder={"Enter Vehicle Model..."}
-                                    onhandleChange={onHandelChange}
-                                    value={edit? data.model : vehicle.model}
+                                    onhandleChange={handleChange}
+                                    value={data.model}
                                     name="model"
                                 />
                             </div>
@@ -121,8 +104,8 @@ export const Entry = ({ edit, editRow, onClose, vehicle, onHandelChange, onHandl
                                     label={'Type'}
                                     required={true}
                                     options={vehicleType}
-                                    onhandleChange={onHandelChange}
-                                    value={edit? data.type : vehicle.type}
+                                    onhandleChange={handleChange}
+                                    value={data.type}
                                     name="type"
                                     def_value="Select Vehicle Type"
                                 />
@@ -132,8 +115,8 @@ export const Entry = ({ edit, editRow, onClose, vehicle, onHandelChange, onHandl
                                     <DateInput
                                         label="Registration Expiry Date"
                                         name="licenEndDate"
-                                        value={edit? data.licenEndDate.substring(0,10) : vehicle.licenEndDate}
-                                        onhandleChange={onHandelChange}
+                                        value={data.licenEndDate.substring(0, 10)}
+                                        onhandleChange={handleChange}
                                         required={false}
                                     />
                                 </div>
@@ -141,8 +124,8 @@ export const Entry = ({ edit, editRow, onClose, vehicle, onHandelChange, onHandl
                                     <DateInput
                                         label="Insurance Expiry Date"
                                         name="InsuranceEndDate"
-                                        onhandleChange={onHandelChange}
-                                        value={edit? data.InsuranceEndDate.substring(0,10) : vehicle.InsuranceEndDate}
+                                        onhandleChange={handleChange}
+                                        value={data.InsuranceEndDate.substring(0, 10)}
                                         required={false}
                                     />
                                 </div>
@@ -155,7 +138,7 @@ export const Entry = ({ edit, editRow, onClose, vehicle, onHandelChange, onHandl
                                     label={"Plate Number"}
                                     required={true}
                                     placeholder={"Enter Vehicle Plate Number..."}
-                                    onhandleChange={onHandelChange}
+                                    onhandleChange={handleChange}
                                     value={vehicle.plate}
                                     name="plate"
                                 /> */}
@@ -165,7 +148,7 @@ export const Entry = ({ edit, editRow, onClose, vehicle, onHandelChange, onHandl
                                     onHandleImage={onHandleImage}
                                     required={false}
                                     // preview={preview}
-                                    preview={edit? data.image :preview}
+                                    preview={edit ? data.image : preview}
                                 />
                             </div>
                             {/* <div className={`${Style.row} ${Style.two_col}`}>
@@ -174,7 +157,7 @@ export const Entry = ({ edit, editRow, onClose, vehicle, onHandelChange, onHandl
                                         label="Registration Expiry Date" 
                                         name="reg_date"
                                         value={vehicle.reg_date}
-                                        onhandleChange={onHandelChange}
+                                        onhandleChange={handleChange}
                                         required={false}
                                     />
                                 </div>
@@ -183,7 +166,7 @@ export const Entry = ({ edit, editRow, onClose, vehicle, onHandelChange, onHandl
                                         label="Insurance Expiry Date"
                                         name="ins_date"
                                         value={vehicle.ins_date}
-                                        onhandleChange={onHandelChange}
+                                        onhandleChange={handleChange}
                                         required={false}
                                     />
                                 </div>
@@ -194,8 +177,8 @@ export const Entry = ({ edit, editRow, onClose, vehicle, onHandelChange, onHandl
                                     label="Note"
                                     placeholder="Enter Note"
                                     name="memo"
-                                    value={edit? data.memo : vehicle.memo}
-                                    onhandleChange={onHandelChange}
+                                    value={data.memo}
+                                    onhandleChange={handleChange}
                                     required={false}
                                 />
                             </div>
@@ -211,13 +194,16 @@ export const Entry = ({ edit, editRow, onClose, vehicle, onHandelChange, onHandl
                             Cancel
                         </FormBtn>
                         {edit && (
-              <FormBtn 
-                onClick={handleDelete}
-                variant='delete'
-              >
-                Delete
-              </FormBtn>
-            )}
+                            <FormBtn
+                                onClick={async () => {
+                                    softDeleteVehicle(editRow);
+                                    onClose();
+                                }}
+                                variant='delete'
+                            >
+                                Delete
+                            </FormBtn>
+                        )}
                         <FormBtn
                             type='submit'
                             variant='submit'

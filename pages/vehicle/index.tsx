@@ -6,9 +6,12 @@ import { SearchComponent } from '@/components/search_component';
 import { Modal } from '@/components/modal/Modal';
 import { Entry } from './entry/entry';
 import { apiGetVehicles } from '../api/apiCreateVehicle';
-
+import { Vehicle } from '@/types/vehicle';
+import { useVehicle } from '@/context/VehicleContext'
 export default function Vehicle() {
 
+  const { vehicleList, } = useVehicle();
+  console.log('List');
   const [isMobile, setIsMobile] = useState(false);
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -30,24 +33,6 @@ export default function Vehicle() {
       };
     }
   }, []);
-
-
-  const [loading, setLoading] = useState(false);
-  const [data, setData] = useState([]);
-  useEffect(() => {
-    (async () => {
-      try {
-        const vehicleData = await apiGetVehicles();
-        setData(vehicleData.data);
-        console.log("Listing Vehicle");
-        console.log(vehicleData.data);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-      setLoading(false);
-    })();
-  }, [loading])
-
 
   // Search 
   const [searchValue, setSearchValue] = useState('');
@@ -192,15 +177,7 @@ export default function Vehicle() {
   //   ins_date: string;
   //   reg_date: string;
   // }
-  interface Vehicle {
 
-    image: File | null;
-    model: string;
-    type: string;
-    memo: string;
-    InsuranceEndDate: string;
-    licenEndDate: string;
-  }
   // handle input value
   const [vehicle, setVehicle] = useState<Vehicle>({
     image: null,
@@ -244,12 +221,6 @@ const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     ))
   }
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    console.log(vehicle);
-  }
-  // console.log(editRow);
-
   return (
     <Layout>
       {
@@ -277,7 +248,7 @@ const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
             <div className={Styles.data_container}>
               <DataList
                 cols={col}
-                datas={data}
+                datas={vehicleList}
                 isMobile={isMobile}
                 // edit={activeEdit}   
                 onEdit={handleEdit}
@@ -295,7 +266,6 @@ const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
               <Entry
                 onHandleImage={handleImageChange}
                 onHandelChange={handleChange}
-                onHandleSubmit={handleSubmit}
                 preview={preview}
                 vehicle={vehicle}
                 edit={activeEdit}
@@ -303,7 +273,6 @@ const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
                 onClose={() => {
                   setActiveAdd(false)
                   setActiveEdit(false)
-                  setLoading(true)
                 }}
 
 
